@@ -1,7 +1,12 @@
 # DuoMind
 
-**A local OpenAI-compatible server that pairs a small LLM with TypeSafe AI's Jev for smarter classification.**
+**A dual-system, OpenAI-compatible local LLM server — run small models (Phi-4, Qwen, Gemma, Llama) privately on your own machine, almost free.**
+
+DuoMind combines System 2 (a small local LLM via llama.cpp) with System 1 (a fast
+classification API) so a 3B model reasons like a much larger one — generation stays 100% local.
+
 <p align="center"><img src="docs/figures/banner.png" alt="DuoMind — dual-system local AI server (System 1 + System 2), OpenAI-compatible and almost free" width="800"></p>
+
 DuoMind combines two AI systems:
 - **System 2 (Reasoning)**: A small local LLM via llama.cpp for text generation and reasoning
 - **System 1 (Classification)**: Jev, TypeSafe AI's fast classification API for ALL decision-making
