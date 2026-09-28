@@ -1,0 +1,56 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit}
+
+\begin{document}
+
+\tikzstyle{box} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+\tikzstyle{cloud} = [ellipse, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=green!10]
+\tikzstyle{decision} = [diamond, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!10]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{tikzpicture}[node distance=2cm]
+
+% User/Client layer
+\node (user) [box] {User / Cline / Kilo Code};
+
+% DuoMind Server
+\node (server) [box, below of=user] {DuoMind Server};
+
+% Jev (System 1)
+\node (jev) [cloud, below left of=server, xshift=-2cm, yshift=-1cm] {Jev \\ (System 1)};
+\node (jev_types) [below of=jev, text width=3cm, font=\small, yshift=0.5cm] {
+    \textbf{Classification:} \\
+    • Noul (yes/no) \\
+    • Choice (pick one) \\
+    • Score (rating)
+};
+
+% LLM (System 2)
+\node (llm) [cloud, below right of=server, xshift=2cm, yshift=-1cm] {Local LLM \\ (System 2)};
+\node (llm_note) [below of=llm, text width=3cm, font=\small, yshift=0.5cm] {
+    \textbf{Generation:} \\
+    Reasoning \\
+    Text output
+};
+
+% Fallback
+\node (fallback) [box, below of=server, yshift=-4cm, fill=yellow!10] {Local Fallback \\ (Rule-based)};
+
+% Arrows
+\draw [arrow] (user) -- (server);
+\draw [arrow] (server) -- node[anchor=east] {PRE} (jev);
+\draw [arrow] (jev) -- node[anchor=west] {decisions} (server);
+\draw [arrow] (server) -- node[anchor=west] {MID} (jev);
+\draw [arrow] (server) -- node[anchor=east] {POST} (jev);
+\draw [arrow] (server) -- node[anchor=west] {prompt} (llm);
+\draw [arrow] (llm) -- node[anchor=east] {response} (server);
+\draw [arrow, dashed] (server) -- node[anchor=west, font=\small] {if Jev fails} (fallback);
+\draw [arrow, dashed] (fallback) -- (server);
+
+% Stages box
+\node (stages) [draw, dashed, fit=(jev) (jev_types) (llm) (llm_note), inner sep=0.3cm, label=above:\textbf{Stages: PRE $\rightarrow$ MID $\rightarrow$ POST}] {};
+
+\end{tikzpicture}
+
+\end{document}
