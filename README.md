@@ -8,7 +8,9 @@ DuoMind combines two AI systems:
 
 This division of labor lets a small local model punch above its weight by outsourcing classification to Jev while keeping generation private and local.
 
-![DuoMind Architecture](docs/images/architecture.png)
+<p align="center">
+  <img src="docs/images/architecture.png" alt="DuoMind architecture" width="700">
+</p>
 
 ---
 
