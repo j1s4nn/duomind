@@ -98,7 +98,7 @@ You should see `Python 3.11.x` or `3.12.x`. If not, Python is not in PATH—rein
 
 **Option A: Git clone (if you have Git)**
 ```powershell
-git clone https://github.com/yourusername/duomind.git
+git clone https://github.com/j1s4nn/duomind.git
 cd duomind
 ```
 
