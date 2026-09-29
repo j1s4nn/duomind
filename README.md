@@ -2,8 +2,8 @@
 
 **A dual-system, OpenAI-compatible local LLM server — run small models (Phi-4, Qwen, Gemma, Llama) privately on your own machine, almost free.**
 
-DuoMind combines System 2 (a small local LLM via llama.cpp) with System 1 (a fast
-classification API) so a 3B model reasons like a much larger one — generation stays 100% local.
+DuoMind combines System 2 (a small local LLM via llama.cpp) with System 1 (JEV: a fast
+classification model API) so a 3B model reasons like a much larger one—generation stays 100% local.
 
 <p align="center"><img src="docs/figures/banner.png" alt="DuoMind — dual-system local AI server (System 1 + System 2), OpenAI-compatible and almost free" width="800"></p>
 
