@@ -1,6 +1,5 @@
 """Ollama backend implementation (optional)."""
 
-import asyncio
 import json
 import logging
 from typing import AsyncIterator, Dict, Optional
@@ -38,7 +37,7 @@ class OllamaBackend(LLMBackend):
     async def health(self) -> bool:
         """Check if Ollama is responding."""
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(trust_env=False) as client:
                 response = await client.get(f"{self.base_url}/api/tags", timeout=2.0)
                 return response.status_code == 200
         except Exception:
@@ -64,7 +63,7 @@ class OllamaBackend(LLMBackend):
             },
         }
 
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        async with httpx.AsyncClient(timeout=120.0, trust_env=False) as client:
             if stream:
                 async with client.stream(
                     "POST",

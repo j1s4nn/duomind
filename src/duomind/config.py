@@ -1,12 +1,14 @@
 """Configuration management for DuoMind."""
 
-import tomli
-import tomli_w
-from pathlib import Path
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
+
 from typing import Optional
 
-from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings
+import tomli_w
+from pydantic import BaseModel
 
 from duomind.utils import get_config_path, load_jev_key
 
@@ -28,6 +30,7 @@ class DuoMindConfig(BaseModel):
     host: str = "127.0.0.1"
     port: int = 8000
     api_key: Optional[str] = None  # Optional bearer token
+    context_size: int = 8192  # llama.cpp context window size
 
     # Orchestration settings
     max_mid_checkpoints: int = 3
@@ -49,7 +52,7 @@ class Config:
 
         try:
             with open(self.path, "rb") as f:
-                data = tomli.load(f)
+                data = tomllib.load(f)
             self.config = DuoMindConfig(**data)
             return self.config
         except Exception as e:
@@ -65,8 +68,11 @@ class Config:
 
         self.path.parent.mkdir(parents=True, exist_ok=True)
 
+        # Filter out None values - TOML can't serialize them
+        data = {k: v for k, v in self.config.model_dump().items() if v is not None}
+
         with open(self.path, "wb") as f:
-            tomli_w.dump(self.config.model_dump(), f)
+            tomli_w.dump(data, f)
 
     def get_jev_key(self) -> Optional[str]:
         """Get Jev API key from keyring."""

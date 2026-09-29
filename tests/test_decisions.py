@@ -1,11 +1,9 @@
 """Test decision registry."""
 
-import pytest
 
 from duomind.decisions import (
     DECISION_REGISTRY,
     DecisionStage,
-    QuestionKind,
     LocalFallbackClassifier,
     build_jev_question,
     get_decisions_for_stage,

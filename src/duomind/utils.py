@@ -8,14 +8,6 @@ from typing import Optional
 import keyring
 from huggingface_hub import hf_hub_download
 from platformdirs import user_data_dir
-from rich.progress import (
-    BarColumn,
-    DownloadColumn,
-    Progress,
-    TextColumn,
-    TimeRemainingColumn,
-    TransferSpeedColumn,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -61,8 +53,13 @@ def get_logs_dir() -> Path:
 
 
 def get_pid_file() -> Path:
-    """Get PID file path."""
+    """Get PID file path for the DuoMind server."""
     return get_data_dir() / "duomind.pid"
+
+
+def get_llama_server_pid_file() -> Path:
+    """Get PID file path for the llama-server process."""
+    return get_data_dir() / "llama-server.pid"
 
 
 def download_hf_file(

@@ -1,19 +1,19 @@
 [
     {
-        "id": "phi-4-mini-q4",
-        "name": "Phi-4 Mini (3.8B)",
-        "params": "3.8B",
+        "id": "phi-4-q4",
+        "name": "Phi-4 (14B)",
+        "params": "14B",
         "license": "MIT",
         "hf_repo": "bartowski/phi-4-GGUF",
         "filename": "phi-4-Q4_K_M.gguf",
         "quant": "Q4_K_M",
-        "size_gb": 2.3,
-        "min_vram_gb": 3.0,
-        "min_ram_gb": 4.0,
+        "size_gb": 8.4,
+        "min_vram_gb": 10.0,
+        "min_ram_gb": 16.0,
         "context": 16384,
         "tool_calling": true,
-        "best_for": "General purpose, fast responses, fits 6GB VRAM",
-        "speed_note": "Very fast, good quality"
+        "best_for": "High quality reasoning, needs 10GB+ VRAM",
+        "speed_note": "Slow on CPU, needs a large GPU"
     },
     {
         "id": "qwen2.5-3b-q4",

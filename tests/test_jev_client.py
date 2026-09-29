@@ -1,10 +1,17 @@
 """Test Jev client."""
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from duomind.decisions import DECISION_REGISTRY, DecisionStage, get_decisions_for_stage
 from duomind.jev_client import CircuitBreaker, JevClient
+
+
+@pytest.fixture(autouse=True)
+def _isolate_cache(tmp_path, monkeypatch):
+    """Isolate the Jev cache per test to avoid cross-test and cross-run pollution."""
+    monkeypatch.setattr("duomind.jev_client.get_cache_dir", lambda: tmp_path)
 
 
 def test_circuit_breaker():

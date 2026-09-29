@@ -1,8 +1,9 @@
 """Test FastAPI server."""
 
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
 from duomind.server import app
 
@@ -59,6 +60,8 @@ def test_chat_completions_auth(client):
         mock_config.load.return_value = mock_cfg
 
         mock_backend.health.return_value = True
+        mock_backend.encode_prompt = AsyncMock(return_value="User: test\n\nAssistant:")
+        mock_backend.generate.return_value.__aiter__.return_value = ["This is a test response."]
 
         # No auth header
         response = client.post("/v1/chat/completions", json={

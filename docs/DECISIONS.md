@@ -6,19 +6,19 @@
 
 ---
 
-## 1. VRAM Constraint: 6GB Not 12GB
+## 1. VRAM Constraint: 6GB Primary, Optional 14B Model
 
 **Context**: Original prompt assumed RTX 3060 with 12GB VRAM. Actual GPU is 6GB variant (laptop).
 
-**Decision**: Adjusted model selection to 2-4B parameter models instead of 8-14B.
+**Decision**: Primary model selection targets 2-4B models for 6GB VRAM, plus one optional 14B model (Phi-4) for machines with 10GB+ VRAM.
 
 **Rationale**:
 - 2-4B models with Q4_K_M quantization use ~2-3GB VRAM
 - Leaves ~3GB for context window and KV cache
-- 8-14B models would not fit even with quantization
+- Phi-4 14B (Q4_K_M, ~8.4GB) is listed first but the setup wizard's "Fit?" column flags it as not fitting on 6GB
 
 **Models chosen**:
-1. Phi-4 Mini 3.8B (if exists)
+1. Phi-4 14B (optional, needs 10GB+ VRAM)
 2. Qwen2.5 3B Instruct
 3. Qwen2.5-Coder 3B
 4. Gemma 2 2B
@@ -197,6 +197,8 @@
 
 **Rationale**: llama-server loads model on startup, can't hot-swap. Restart is necessary.
 
+**Current status**: The `duomind models` subcommand is not implemented yet. Switching models currently requires re-running `duomind setup` or editing `model_path` in `config.toml` manually.
+
 ---
 
 ## 13. Jev ON/OFF: Runtime Toggle
@@ -208,6 +210,8 @@
 **Implementation**: Server checks `config.jev_enabled` on each request. JevClient initialized at startup but `enabled` flag checked per call.
 
 **Benchmark**: `scripts/benchmark.py` runs same prompts with Jev on and off, compares results.
+
+**Current status**: The `duomind jev` subcommand is not implemented yet. Toggling Jev currently requires editing `jev_enabled` in `config.toml` and restarting the server.
 
 ---
 
@@ -271,16 +275,18 @@
 
 ---
 
-## 18. Models.json: 5 Models for 6GB VRAM
+## 18. Models.json: 5 Models (1 Large + 4 Small)
 
 **Context**: Original prompt suggested Phi-4 3.8B, Qwen 8B, Gemma 12B. Too large for 6GB.
 
-**Decision**: Curated list of 2-4B models, all with Q4_K_M quantization:
-1. Phi-4 Mini 3.8B (if exists) - general purpose
+**Decision**: Curated list with Q4_K_M quantization — one large model and four 2-3B models:
+1. Phi-4 14B - high quality, needs 10GB+ VRAM
 2. Qwen2.5 3B Instruct - multilingual, long context
 3. Qwen2.5-Coder 3B - code-focused
 4. Gemma 2 2B - smallest, fastest
 5. Llama 3.2 3B - long context, Meta quality
+
+**Correction (Phi-4 Mini mislabel)**: The original `models.json` listed a "Phi-4 Mini (3.8B)" entry whose `hf_repo`/`filename` actually pointed to the full Phi-4 (14B, ~8.4GB). Selecting it on a 6GB machine downloaded the full model and crashed. The entry has been relabeled honestly as "Phi-4 (14B)" with correct size and VRAM requirements. A true Phi-4 Mini entry is not currently listed.
 
 **Verification**: Must check Hugging Face repos exist before finalizing list.
 
@@ -319,7 +325,7 @@
 
 **Windows-specific**:
 - Path handling via `pathlib` (works everywhere)
-- Process management: `DETACHED_PROCESS` on Windows, `start_new_session` on POSIX
+- Process management: `CREATE_NO_WINDOW` on Windows, `start_new_session` on POSIX
 - GPU detection: `nvidia-smi` (works on Linux too)
 
 **Not tested**: macOS, Linux. May work but no guarantees.
@@ -328,10 +334,10 @@
 
 ## Summary of Deviations from Original Prompt
 
-1. **Model selection**: 2-4B instead of 8-14B (VRAM constraint)
+1. **Model selection**: 2-4B primary plus an optional 14B (VRAM constraint)
 2. **Terminology**: "Noul" instead of "null" (SDK naming)
 3. **llama.cpp download**: Manual in setup wizard (automated download not implemented yet)
 4. **MID checkpoints**: Skeleton only (segmented generation deferred)
-5. **Default model count**: 5 instead of "exactly 5 for 12GB tier" (now "5 for 6GB tier")
+5. **Default model count**: 5 (one 14B + four 2-3B)
 
 **Everything else**: Implemented as specified or with reasonable defaults where unspecified.

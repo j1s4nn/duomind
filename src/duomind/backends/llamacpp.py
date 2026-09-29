@@ -10,11 +10,15 @@ from pathlib import Path
 from typing import AsyncIterator, Dict, Optional
 
 import httpx
+import psutil
 
 from duomind.backends.base import LLMBackend
-from duomind.utils import get_binaries_dir, get_pid_file
+from duomind.utils import get_binaries_dir, get_llama_server_pid_file
 
 logger = logging.getLogger(__name__)
+
+CREATE_NO_WINDOW = 0x08000000
+CREATE_NEW_PROCESS_GROUP = 0x00000200
 
 
 class LlamaCppBackend(LLMBackend):
@@ -49,6 +53,9 @@ class LlamaCppBackend(LLMBackend):
                 f"llama-server not found at {binary_path}. Run 'duomind setup' first."
             )
 
+        # Clean up any orphaned llama-server before starting a fresh one
+        self._kill_orphans()
+
         # Build command
         cmd = [
             str(binary_path),
@@ -64,12 +71,10 @@ class LlamaCppBackend(LLMBackend):
 
         # Start process (detached on Windows)
         if sys.platform == "win32":
-            # Detached process on Windows
-            DETACHED_PROCESS = 0x00000008
-            CREATE_NEW_PROCESS_GROUP = 0x00000200
+            # Run in background without a console window
             self.process = subprocess.Popen(
                 cmd,
-                creationflags=DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP,
+                creationflags=CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
@@ -82,16 +87,16 @@ class LlamaCppBackend(LLMBackend):
             )
 
         # Write PID file
-        pid_file = get_pid_file()
+        pid_file = get_llama_server_pid_file()
         pid_file.write_text(str(self.process.pid))
 
         # Wait for server to be ready
-        await self._wait_for_ready(timeout=30)
+        await self._wait_for_ready(timeout=300)
         logger.info(f"llama-server ready (PID {self.process.pid})")
 
     async def stop(self) -> None:
         """Stop llama-server process."""
-        pid_file = get_pid_file()
+        pid_file = get_llama_server_pid_file()
 
         if self.process:
             logger.info(f"Stopping llama-server (PID {self.process.pid})")
@@ -117,7 +122,7 @@ class LlamaCppBackend(LLMBackend):
     async def health(self) -> bool:
         """Check if llama-server is responding."""
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(trust_env=False) as client:
                 response = await client.get(f"{self.base_url}/health", timeout=2.0)
                 return response.status_code == 200
         except Exception:
@@ -141,7 +146,7 @@ class LlamaCppBackend(LLMBackend):
             "cache_prompt": True,  # Enable prompt caching
         }
 
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        async with httpx.AsyncClient(timeout=120.0, trust_env=False) as client:
             if stream:
                 async with client.stream(
                     "POST",
@@ -196,7 +201,18 @@ class LlamaCppBackend(LLMBackend):
 
         return "\n\n".join(prompt_parts)
 
-    async def _wait_for_ready(self, timeout: int = 30):
+    def _kill_orphans(self) -> None:
+        """Kill any lingering llama-server processes to avoid port conflicts."""
+        for proc in psutil.process_iter(["name", "pid"]):
+            try:
+                name = (proc.info.get("name") or "").lower()
+                if name.startswith("llama-server"):
+                    logger.warning(f"Killing orphaned llama-server (PID {proc.info['pid']})")
+                    proc.kill()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+
+    async def _wait_for_ready(self, timeout: int = 300):
         """Wait for llama-server to be ready."""
         start = asyncio.get_event_loop().time()
         while True:

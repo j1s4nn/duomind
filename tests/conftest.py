@@ -1,8 +1,8 @@
 """Test fixtures for DuoMind."""
 
+from unittest.mock import MagicMock
+
 import pytest
-from unittest.mock import AsyncMock, MagicMock
-from pathlib import Path
 
 from duomind.backends.base import LLMBackend
 from duomind.jev_client import JevClient

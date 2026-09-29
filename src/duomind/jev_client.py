@@ -11,9 +11,7 @@ from typesafe_sdk import TypeSafeClient
 from typesafe_sdk._core.retry import RetryPolicy
 
 from duomind.decisions import (
-    DECISION_REGISTRY,
     DecisionPoint,
-    DecisionStage,
     LocalFallbackClassifier,
     QuestionKind,
     build_jev_question,
@@ -232,10 +230,12 @@ class JevClient:
                     }
                     continue
 
-                # Extract value and confidence based on question type
+                # Extract value and confidence based on question type.
+                # Noul answers expose only `noul` (0-1 probability), not a
+                # confidence field; derive confidence from distance to 0.5.
                 if decision.kind == QuestionKind.NOUL:
                     value = answer.noul >= 0.5  # Convert probability to bool
-                    confidence = answer.confidence
+                    confidence = abs(answer.noul - 0.5) * 2.0
                 elif decision.kind == QuestionKind.CHOICE:
                     value = answer.choice
                     confidence = answer.confidence

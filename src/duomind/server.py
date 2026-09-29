@@ -1,15 +1,14 @@
 """FastAPI server with OpenAI-compatible endpoints."""
 
-import asyncio
 import json
 import logging
 import time
 import uuid
 from typing import Any, AsyncIterator, Dict, List, Optional
 
-from fastapi import FastAPI, HTTPException, Header, Request
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from duomind.backends import LlamaCppBackend, OllamaBackend
 from duomind.config import config
@@ -28,6 +27,21 @@ jev_client: Optional[JevClient] = None
 class Message(BaseModel):
     role: str
     content: str
+
+    @field_validator("content", mode="before")
+    @classmethod
+    def _coerce_content(cls, v: Any) -> str:
+        """Accept OpenAI multimodal content arrays and flatten them to text."""
+        if isinstance(v, str):
+            return v
+        if isinstance(v, list):
+            parts = []
+            for item in v:
+                if isinstance(item, dict):
+                    if item.get("type") == "text" or "text" in item:
+                        parts.append(str(item.get("text", "")))
+            return "\n".join(parts)
+        return str(v)
 
 
 class ChatCompletionRequest(BaseModel):
@@ -73,7 +87,7 @@ async def startup():
     if cfg.llm_backend == "llamacpp":
         if not cfg.model_path:
             raise RuntimeError("No model path configured. Run 'duomind setup' first.")
-        backend = LlamaCppBackend(model_path=cfg.model_path)
+        backend = LlamaCppBackend(model_path=cfg.model_path, n_ctx=cfg.context_size)
         await backend.start()
         logger.info(f"llama.cpp backend started with model {cfg.model_path}")
     elif cfg.llm_backend == "ollama":
