@@ -1,0 +1,2434 @@
+{
+  "benchmark_id": "benchmark_20260929_063012",
+  "timestamp": "2026-09-29T06:30:12.081635+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "model": "C:\\Users\\jisan\\AppData\\Local\\duomind\\models\\qwen2.5-coder-3b-instruct-q4_k_m.gguf",
+  "backend": "llamacpp",
+  "runs": 10,
+  "results": [
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 7,
+        "total": 284
+      },
+      "speed": {
+        "latency_seconds": 0.392,
+        "tokens_per_second": 17.87,
+        "llm_seconds": 0.365
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model using labeled data, where the input-output pairs are known. The goal is to learn a function that can predict the output for new, unseen data. This is typically done by minimizing a loss function that measures the difference between predicted and actual values. Supervised learning is commonly used for tasks like classification and regression.\n\nUnsupervised learning, on the other hand, involves training a model using unlabeled data, where only the inputs are available. The goal is to learn a structure or pattern in the data, such as grouping similar data points together or identifying clusters. This is typically done by finding the best way to partition the data into groups or by using techniques like clustering or dimensionality reduction. Unsupervised learning is commonly used for tasks like clustering, dimensionality reduction, and anomaly detection.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 227,
+        "total": 512
+      },
+      "speed": {
+        "latency_seconds": 1.561,
+        "tokens_per_second": 145.43,
+        "llm_seconds": 1.531
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci_numbers(n):\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n\n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])\n    return fib_sequence\n\n# Example usage:\nprint(fibonacci_numbers(10))\n```\n\nTo run or test the code, you can save it to a file named `fibonacci.py` and then execute it using Python. For example:\n```bash\npython fibonacci.py\n```\n\nThis will output the first 10 Fibonacci numbers: `[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]`.",
+      "tokens": {
+        "prompt": 428,
+        "completion": 143,
+        "total": 571
+      },
+      "speed": {
+        "latency_seconds": 1.728,
+        "tokens_per_second": 82.78,
+        "llm_seconds": 1.715
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.002
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Machines learn, reason,\nWith thoughts like humans, yet distinct,\nInfinite potential.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 21,
+        "total": 303
+      },
+      "speed": {
+        "latency_seconds": 0.243,
+        "tokens_per_second": 86.35,
+        "llm_seconds": 0.222
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence model that is trained on vast amounts of text data and can generate human-like text based on input prompts. It is designed to understand and respond to natural language, making it useful for a wide range of applications such as language translation, chatbots, and content generation.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 85,
+        "total": 367
+      },
+      "speed": {
+        "latency_seconds": 0.612,
+        "tokens_per_second": 138.93,
+        "llm_seconds": 0.599
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 1,
+        "total": 278
+      },
+      "speed": {
+        "latency_seconds": 0.089,
+        "tokens_per_second": 11.21,
+        "llm_seconds": 0.063
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model using labeled data, where each example has both input features and corresponding correct output labels. The model learns to predict outputs based on these labeled inputs. Supervised learning is commonly used in tasks like classification and regression.\n\nUnsupervised learning, on the other hand, uses unlabeled data, where the model must learn patterns and relationships without any prior knowledge of the correct outputs. The goal in unsupervised learning is to discover underlying structures or groupings in the data, such as clustering or dimensionality reduction. Examples of unsupervised learning include clustering, dimensionality reduction, and association rule mining.\n\nThe key differences are the use of labeled versus unlabeled data, the model's ability to make predictions, and the nature of the task being performed.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 218,
+        "total": 503
+      },
+      "speed": {
+        "latency_seconds": 1.474,
+        "tokens_per_second": 147.9,
+        "llm_seconds": 1.448
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    # Step 1: State the files you will create or edit and why\n    # - Create a file named 'fibonacci.py' to store the function.\n\n    # Step 2: Write the complete, correct, runnable code with file tools\n    # - Create a list to store Fibonacci numbers\n    fib_sequence = []\n\n    # - Use a loop to generate the first 10 Fibonacci numbers\n    for i in range(n):\n        if i <= 1:\n            fib_sequence.append(i)\n        else:\n            fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n\n    # Step 3: Write code to explain how to run or test it\n    # - Explanation: Run the script in a Python environment. You can call the function 'fibonacci(10)' to see the result.\n\n    return fib_sequence\n\n# Example usage:\n# result = fibonacci(10)\n# print(result)\n```\n\nThis code defines a function `fibonacci` that computes the first 10 Fibonacci numbers and returns them as a list. The explanation provides instructions on how to run the script and test the function.",
+      "tokens": {
+        "prompt": 428,
+        "completion": 248,
+        "total": 676
+      },
+      "speed": {
+        "latency_seconds": 2.375,
+        "tokens_per_second": 104.43,
+        "llm_seconds": 2.362
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Code whispers, minds grow,\nIn endless loops, intelligence thrives,\nAI dreams, one line at a time.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 24,
+        "total": 306
+      },
+      "speed": {
+        "latency_seconds": 0.297,
+        "tokens_per_second": 80.86,
+        "llm_seconds": 0.271
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence that can understand and generate human language, often trained on vast amounts of text data. They are designed to process and produce text in a way that mimics human language, capable of understanding and generating coherent sentences and paragraphs.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 77,
+        "total": 359
+      },
+      "speed": {
+        "latency_seconds": 0.55,
+        "tokens_per_second": 140.12,
+        "llm_seconds": 0.539
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 7,
+        "total": 284
+      },
+      "speed": {
+        "latency_seconds": 0.117,
+        "tokens_per_second": 60.08,
+        "llm_seconds": 0.104
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning is a type of machine learning where the model is trained on labeled data, meaning the input-output pairs are known. The goal is to learn a function that maps input features to output labels. This allows the model to make predictions on new, unseen data based on the patterns learned from the training data. Common supervised learning algorithms include regression and classification.\n\nUnsupervised learning, on the other hand, involves training models on data that does not have any labeled output. The goal is to discover patterns or groupings within the data without explicit guidance. In unsupervised learning, the model is free to explore the data and find meaningful structures on its own. Common unsupervised learning algorithms include clustering and dimensionality reduction.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 200,
+        "total": 485
+      },
+      "speed": {
+        "latency_seconds": 1.503,
+        "tokens_per_second": 133.1,
+        "llm_seconds": 1.49
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    return fib_sequence\n\n# Example usage:\nprint(fibonacci(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```",
+      "tokens": {
+        "prompt": 428,
+        "completion": 64,
+        "total": 492
+      },
+      "speed": {
+        "latency_seconds": 1.067,
+        "tokens_per_second": 59.97,
+        "llm_seconds": 1.035
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Mind in code, logic in thought,\nAI dreams, machines do the work,\nIntelligence, forever more.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 23,
+        "total": 305
+      },
+      "speed": {
+        "latency_seconds": 0.291,
+        "tokens_per_second": 78.97,
+        "llm_seconds": 0.265
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence system that can understand and generate human language based on vast amounts of text data. It is designed to mimic the ability of humans to communicate, comprehend, and express ideas through language.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 65,
+        "total": 347
+      },
+      "speed": {
+        "latency_seconds": 0.477,
+        "tokens_per_second": 136.4,
+        "llm_seconds": 0.45
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 277,
+        "completion": 1,
+        "total": 278
+      },
+      "speed": {
+        "latency_seconds": 0.069,
+        "tokens_per_second": 14.39,
+        "llm_seconds": 0.05
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning is a type of machine learning where the model is trained on a labeled dataset, meaning the input data is paired with the corresponding output or target variable. The goal is for the model to learn a mapping from the input features to the output labels, allowing it to make predictions on new, unseen data. Common algorithms include linear regression, decision trees, and neural networks.\n\nUnsupervised learning, on the other hand, does not use labeled data. Instead, the model is given raw data and is tasked with finding patterns, clusters, or relationships within the data without any prior knowledge of the correct output. The model learns from the data itself, often using techniques like clustering, dimensionality reduction (e.g., PCA), or association rule mining. Common algorithms include k-means clustering, hierarchical clustering, and anomaly detection.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 221,
+        "total": 506
+      },
+      "speed": {
+        "latency_seconds": 1.652,
+        "tokens_per_second": 133.79,
+        "llm_seconds": 1.62
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\n# Create a Python function to compute the first 10 Fibonacci numbers\ndef fibonacci_numbers():\n    # Plan: Create a list to store Fibonacci numbers and initialize the first two numbers\n    fib = [0, 1]\n    \n    # Calculate the first 8 Fibonacci numbers\n    for i in range(2, 10):\n        fib.append(fib[i-1] + fib[i-2])\n    \n    # Return the list of Fibonacci numbers\n    return fib\n\n# Explain how to run or test the function\nprint(\"The first 10 Fibonacci numbers are:\", fibonacci_numbers())\n```",
+      "tokens": {
+        "prompt": 428,
+        "completion": 126,
+        "total": 554
+      },
+      "speed": {
+        "latency_seconds": 1.331,
+        "tokens_per_second": 94.66,
+        "llm_seconds": 1.297
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Infinite minds, learning and dreaming,\nCode whispers secrets to the night,\nAI dreams in bits and bytes.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 25,
+        "total": 307
+      },
+      "speed": {
+        "latency_seconds": 0.306,
+        "tokens_per_second": 81.78,
+        "llm_seconds": 0.289
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence designed to understand and generate human language, using vast amounts of data to learn patterns and improve its responses over time.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 48,
+        "total": 330
+      },
+      "speed": {
+        "latency_seconds": 0.35,
+        "tokens_per_second": 137.2,
+        "llm_seconds": 0.337
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 7,
+        "total": 284
+      },
+      "speed": {
+        "latency_seconds": 0.116,
+        "tokens_per_second": 60.36,
+        "llm_seconds": 0.105
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning is a type of machine learning where the model is trained on labeled data, meaning it has examples of the input and the corresponding output. The goal of supervised learning is to learn a mapping from inputs to outputs so that the model can make accurate predictions on new, unseen data. Common algorithms for supervised learning include linear regression, decision trees, support vector machines, and neural networks.\n\nUnsupervised learning, on the other hand, does not use labeled data. The model is trained on unlabeled data, and the goal is to discover patterns, group similar data points together, or identify underlying structures without any prior knowledge of the output. Unsupervised learning algorithms include clustering (e.g., k-means), dimensionality reduction (e.g., PCA), and anomaly detection.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 207,
+        "total": 492
+      },
+      "speed": {
+        "latency_seconds": 1.56,
+        "tokens_per_second": 132.66,
+        "llm_seconds": 1.534
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    fib = [0, 1]\n    for i in range(2, n):\n        fib.append(fib[i-1] + fib[i-2])\n    return fib\n\nprint(fibonacci(10))\n```",
+      "tokens": {
+        "prompt": 428,
+        "completion": 37,
+        "total": 465
+      },
+      "speed": {
+        "latency_seconds": 0.599,
+        "tokens_per_second": 61.79,
+        "llm_seconds": 0.569
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Coding flows through silicon,\nMachines learn, they think,\nArtificial intelligence is alive.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 22,
+        "total": 304
+      },
+      "speed": {
+        "latency_seconds": 0.238,
+        "tokens_per_second": 92.62,
+        "llm_seconds": 0.208
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a supercomputer designed to generate human-like text based on vast amounts of data, enabling tasks such as answering questions, writing stories, and conversing on a wide range of topics.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 53,
+        "total": 335
+      },
+      "speed": {
+        "latency_seconds": 0.439,
+        "tokens_per_second": 120.6,
+        "llm_seconds": 0.424
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 7,
+        "total": 284
+      },
+      "speed": {
+        "latency_seconds": 0.115,
+        "tokens_per_second": 60.68,
+        "llm_seconds": 0.103
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning is a type of machine learning where the model is trained on labeled data, meaning each example has an input and a corresponding output. The goal is for the model to learn a mapping between inputs and outputs, which it can then use to make predictions on new, unseen data. Examples of supervised learning include classification (e.g., identifying whether an email is spam or not) and regression (e.g., predicting house prices based on features like square footage and location).\n\nUnsupervised learning, on the other hand, involves training the model on data without any labels. The model must learn the underlying structure or patterns in the data on its own. The goal is to discover hidden relationships or clusters within the data. Examples of unsupervised learning include clustering (e.g., grouping customers based on their purchasing behavior) and dimensionality reduction (e.g., reducing the number of features in a dataset while preserving important information).",
+      "tokens": {
+        "prompt": 285,
+        "completion": 247,
+        "total": 532
+      },
+      "speed": {
+        "latency_seconds": 1.791,
+        "tokens_per_second": 137.92,
+        "llm_seconds": 1.779
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    \"\"\"\n    Computes the first n Fibonacci numbers.\n\n    Args:\n    n (int): The number of Fibonacci numbers to compute.\n\n    Returns:\n    list: A list containing the first n Fibonacci numbers.\n    \"\"\"\n    fib_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fib_sequence.append(a)\n        a, b = b, a + b\n    return fib_sequence\n\n# Usage example\nprint(fibonacci(10))\n```\n\nTo run or test this code:\n1. Copy the code into a Python file or a Python interpreter session.\n2. Call the `fibonacci(10)` function to get the first 10 Fibonacci numbers.",
+      "tokens": {
+        "prompt": 428,
+        "completion": 145,
+        "total": 573
+      },
+      "speed": {
+        "latency_seconds": 1.551,
+        "tokens_per_second": 93.47,
+        "llm_seconds": 1.515
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Illumination through code,\nThoughts in algorithms dance,\nInfinite knowledge.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 19,
+        "total": 301
+      },
+      "speed": {
+        "latency_seconds": 0.265,
+        "tokens_per_second": 71.68,
+        "llm_seconds": 0.23
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence designed to understand and generate human language, capable of processing vast amounts of text data to improve accuracy and context in text-based interactions.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 54,
+        "total": 336
+      },
+      "speed": {
+        "latency_seconds": 0.395,
+        "tokens_per_second": 136.75,
+        "llm_seconds": 0.364
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 277,
+        "completion": 1,
+        "total": 278
+      },
+      "speed": {
+        "latency_seconds": 0.08,
+        "tokens_per_second": 12.52,
+        "llm_seconds": 0.057
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning is a type of machine learning where the model is trained on labeled data, meaning each input example has a corresponding output label. The goal is to learn a mapping from input features to output labels, such that the model can predict the output for new, unseen data. Supervised learning is commonly used for tasks like image classification, speech recognition, and natural language processing.\n\nUnsupervised learning, on the other hand, involves training a model on unlabeled data, where there are no predefined output labels. The goal is to discover patterns, structures, or clusters in the data. Unsupervised learning is useful for tasks such as clustering, dimensionality reduction, and anomaly detection.\n\nIn supervised learning, the model is explicitly guided by the output labels, which allows it to learn a direct mapping between inputs and outputs. This approach is often more straightforward to implement and interpret, as the model's predictions can be evaluated against known outcomes.\n\nIn unsupervised learning, the model must explore and discover relationships within the data without explicit guidance, which can be more complex but also more powerful. Unsupervised learning techniques often involve clustering, where the model groups similar data points together, or dimensionality reduction, where the model reduces the number of features in the data while preserving its structure.\n\nBoth supervised and unsupervised learning have their own strengths and are suitable for different types of problems, and they can be combined to leverage the strengths of both approaches.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 402,
+        "total": 687
+      },
+      "speed": {
+        "latency_seconds": 2.779,
+        "tokens_per_second": 144.67,
+        "llm_seconds": 2.745
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\n# Plan: Create a list to store Fibonacci numbers and iterate to compute the first 10.\n\nfibonacci_numbers = []\n\nfor i in range(10):\n    if i <= 1:\n        fibonacci_numbers.append(i)\n    else:\n        fibonacci_numbers.append(fibonacci_numbers[-1] + fibonacci_numbers[-2])\n\n# Explanation: The function uses a for loop to iterate from 0 to 9. For the first two numbers, it directly appends the number itself. For subsequent numbers, it appends the sum of the last two numbers in the list. The list is then returned.\n\n# Usage example:\n# print(fibonacci_numbers)  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\nTo run this code, you can use Python's built-in interpreter or save it to a file and execute it with the command `python filename.py`.",
+      "tokens": {
+        "prompt": 428,
+        "completion": 188,
+        "total": 616
+      },
+      "speed": {
+        "latency_seconds": 2.016,
+        "tokens_per_second": 93.23,
+        "llm_seconds": 2.003
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Infinite minds, learning and growing,\nMachine whispers, thoughts unseen,\nAI, beyond our bounds.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 23,
+        "total": 305
+      },
+      "speed": {
+        "latency_seconds": 0.301,
+        "tokens_per_second": 76.41,
+        "llm_seconds": 0.263
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence that processes vast amounts of text data to generate human-like responses, enabling tasks such as answering questions, generating creative content, and assisting with a wide range of applications.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 64,
+        "total": 346
+      },
+      "speed": {
+        "latency_seconds": 0.441,
+        "tokens_per_second": 145.25,
+        "llm_seconds": 0.428
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris is the capital of France.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 7,
+        "total": 284
+      },
+      "speed": {
+        "latency_seconds": 0.114,
+        "tokens_per_second": 61.43,
+        "llm_seconds": 0.102
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.002
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model using labeled data, where the model is given input-output pairs to learn the relationship between them. The goal is to predict the output for new, unseen data. Examples of supervised learning include classification (e.g., spam detection) and regression (e.g., predicting house prices).\n\nUnsupervised learning, on the other hand, does not use labeled data. Instead, it uses unlabeled data to find patterns or group similar data points together. The goal is to discover the underlying structure of the data without any predefined outputs. Examples of unsupervised learning include clustering (e.g., grouping customers by spending habits) and dimensionality reduction (e.g., reducing the number of features in a dataset).",
+      "tokens": {
+        "prompt": 285,
+        "completion": 191,
+        "total": 476
+      },
+      "speed": {
+        "latency_seconds": 1.46,
+        "tokens_per_second": 130.82,
+        "llm_seconds": 1.447
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci():\n    # Plan: Create a list to store the Fibonacci numbers and initialize the first two numbers\n    fib_sequence = [0, 1]\n    \n    # Compute the next 8 Fibonacci numbers\n    for i in range(2, 10):\n        next_fib = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_fib)\n    \n    # Return the list of Fibonacci numbers\n    return fib_sequence\n\n# Usage example\nfib_sequence = fibonacci()\nprint(f\"Fibonacci numbers: {fib_sequence}\")\n```\n\nTo run this code, you can simply execute it in a Python environment. The function `fibonacci` computes the first 10 Fibonacci numbers and prints them.",
+      "tokens": {
+        "prompt": 428,
+        "completion": 158,
+        "total": 586
+      },
+      "speed": {
+        "latency_seconds": 1.572,
+        "tokens_per_second": 100.49,
+        "llm_seconds": 1.56
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Coding dreams in silicon,\nAI learns, adapts, creates,\nInnovation's endless dance.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 20,
+        "total": 302
+      },
+      "speed": {
+        "latency_seconds": 0.263,
+        "tokens_per_second": 76.11,
+        "llm_seconds": 0.24
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is an AI system that can understand, generate, and analyze vast amounts of human language, enabling it to perform tasks such as translation, summarization, and answering complex questions.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 52,
+        "total": 334
+      },
+      "speed": {
+        "latency_seconds": 0.409,
+        "tokens_per_second": 127.06,
+        "llm_seconds": 0.397
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 7,
+        "total": 284
+      },
+      "speed": {
+        "latency_seconds": 0.137,
+        "tokens_per_second": 50.95,
+        "llm_seconds": 0.101
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning and unsupervised learning are two different approaches to training machine learning models. \n\n**Supervised Learning**: In supervised learning, the model is trained on a labeled dataset, which means that each input example is associated with a known output. The model learns to predict the output for new, unseen data by minimizing the difference between the predicted and actual outputs. The most common type of supervised learning is classification, where the output is a category, and regression, where the output is a continuous value.\n\n**Unsupervised Learning**: In unsupervised learning, the model is trained on an unlabeled dataset, meaning that there are no known outputs. The goal of unsupervised learning is to discover patterns or structure in the data, such as clusters or associations. Some common types of unsupervised learning include clustering, dimensionality reduction, and association rule learning.\n\nThe key difference between the two approaches is that supervised learning requires labeled data, while unsupervised learning does not. Supervised learning is often used for tasks where the output is known, while unsupervised learning is used for tasks where the output is unknown.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 304,
+        "total": 589
+      },
+      "speed": {
+        "latency_seconds": 2.19,
+        "tokens_per_second": 138.84,
+        "llm_seconds": 2.168
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    return fib_sequence\n\n# Explanation:\n# The function `fibonacci` generates the first `n` Fibonacci numbers.\n# It initializes a list `fib_sequence` with the first two Fibonacci numbers, 0 and 1.\n# It then uses a for loop to calculate the subsequent Fibonacci numbers by summing the last two numbers in the list.\n# The function finally returns the list containing the first `n` Fibonacci numbers.\n\n# Usage:\n# To use this function, call it with the desired number of Fibonacci numbers, for example:\n# result = fibonacci(10)\n# print(result)  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\nTo run or test this code, simply call the `fibonacci` function with the desired number of Fibonacci numbers. The function will return a list containing the Fibonacci sequence up to that number.",
+      "tokens": {
+        "prompt": 428,
+        "completion": 232,
+        "total": 660
+      },
+      "speed": {
+        "latency_seconds": 2.385,
+        "tokens_per_second": 97.28,
+        "llm_seconds": 2.349
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Intelligence in code,\nLearning from data,\nMachine dreams unfold.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 16,
+        "total": 298
+      },
+      "speed": {
+        "latency_seconds": 0.208,
+        "tokens_per_second": 76.95,
+        "llm_seconds": 0.187
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence that has been trained on vast amounts of text data, enabling it to generate human-like responses to a wide range of tasks, such as answering questions, writing stories, and providing information.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 63,
+        "total": 345
+      },
+      "speed": {
+        "latency_seconds": 0.479,
+        "tokens_per_second": 131.61,
+        "llm_seconds": 0.466
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris.",
+      "tokens": {
+        "prompt": 277,
+        "completion": 1,
+        "total": 278
+      },
+      "speed": {
+        "latency_seconds": 0.076,
+        "tokens_per_second": 13.18,
+        "llm_seconds": 0.059
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 11,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "simple_fact",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised and unsupervised learning are two main types of machine learning approaches used to train models to make predictions or decisions based on data.\n\n1. **Supervised Learning:**\n   - **Definition:** In supervised learning, the model is trained on a labeled dataset, where each data point has a known output or label. The goal is to learn a function that maps inputs to outputs.\n   - **Types:**\n     - **Classification:** The model predicts discrete categories or classes. Examples include spam detection or classifying images as cats or dogs.\n     - **Regression:** The model predicts continuous values. Examples include predicting house prices or stock prices.\n   - **Process:**\n     - The model is trained using a labeled dataset where each data point is paired with its corresponding output.\n     - The model adjusts its parameters to minimize the error between predicted and actual outputs.\n     - Common algorithms include logistic regression, decision trees, support vector machines (SVM), and neural networks.\n\n2. **Unsupervised Learning:**\n   - **Definition:** In unsupervised learning, the model is trained on an unlabeled dataset, where each data point does not have a known output or label. The goal is to discover patterns, relationships, or structures in the data without guidance.\n   - **Types:**\n     - **Clustering:** The model groups similar data points together. Examples include K-means clustering or hierarchical clustering.\n     - **Dimensionality Reduction:** The model reduces the number of features while preserving the essential information. Examples include principal component analysis (PCA) or t-Distributed Stochastic Neighbor Embedding (t-SNE).\n     - **Anomaly Detection:** The model identifies outliers or anomalies in the data. Examples include Isolation Forest or One-Class SVM.\n   - **Process:**\n     - The model explores the data and learns patterns on its own.\n     - Common algorithms include k-means, hierarchical clustering, PCA, and anomaly detection models.\n   - **Use Cases:**\n     - Discovering customer segments or market trends\n     - Reducing data for easier analysis or visualization\n     - Identifying fraudulent transactions\n\nIn summary, supervised learning requires labeled data and focuses on predicting outputs, while unsupervised learning does not require labeled data and focuses on discovering patterns, relationships, or structures in the data.",
+      "tokens": {
+        "prompt": 285,
+        "completion": 602,
+        "total": 887
+      },
+      "speed": {
+        "latency_seconds": 4.393,
+        "tokens_per_second": 137.04,
+        "llm_seconds": 4.375
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "reasoning",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    fib_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fib_sequence.append(a)\n        a, b = b, a + b\n    return fib_sequence\n\n# Usage example:\n# result = fibonacci(10)\n# print(result)  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```",
+      "tokens": {
+        "prompt": 428,
+        "completion": 68,
+        "total": 496
+      },
+      "speed": {
+        "latency_seconds": 1.115,
+        "tokens_per_second": 60.96,
+        "llm_seconds": 1.085
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 20,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "code",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Mind of code, thoughts flow,\nLearning from data, it grows,\nInnovation, it blooms.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 20,
+        "total": 302
+      },
+      "speed": {
+        "latency_seconds": 0.266,
+        "tokens_per_second": 75.07,
+        "llm_seconds": 0.253
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 16,
+        "seconds": 0.001
+      },
+      "mode": "jev_on",
+      "prompt_id": "creative",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence designed to understand and generate human-like text based on vast amounts of data. They can handle a wide range of tasks, from answering questions and writing stories to generating creative content and participating in conversations.",
+      "tokens": {
+        "prompt": 282,
+        "completion": 73,
+        "total": 355
+      },
+      "speed": {
+        "latency_seconds": 0.499,
+        "tokens_per_second": 146.33,
+        "llm_seconds": 0.487
+      },
+      "jev": {
+        "enabled": true,
+        "decisions": 10,
+        "tokens": 17,
+        "seconds": 0.0
+      },
+      "mode": "jev_on",
+      "prompt_id": "explain",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 412,
+        "completion": 7,
+        "total": 419
+      },
+      "speed": {
+        "latency_seconds": 0.142,
+        "tokens_per_second": 49.15,
+        "llm_seconds": 0.131
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model on labeled data, where the correct answers are known. The model learns to predict outcomes based on these labeled examples. Unsupervised learning, on the other hand, involves training a model on unlabeled data, where the correct outcomes are unknown. The model learns to identify patterns and structures within the data on its own.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 94,
+        "total": 381
+      },
+      "speed": {
+        "latency_seconds": 0.728,
+        "tokens_per_second": 129.06,
+        "llm_seconds": 0.715
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci(n):\n    \"\"\"Generate the first n Fibonacci numbers.\"\"\"\n    fibs = []\n    a, b = 0, 1\n    for _ in range(n):\n        fibs.append(a)\n        a, b = b, a + b\n    return fibs\n\n# Example usage\nprint(fibonacci(10))\n```\n\n**How to run:** Copy the code into a Python file or an interactive Python session, then call the `fibonacci(10)` function. It will print the first 10 Fibonacci numbers.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 101,
+        "total": 522
+      },
+      "speed": {
+        "latency_seconds": 1.236,
+        "tokens_per_second": 81.69,
+        "llm_seconds": 1.204
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "I am the brain of the machine,\nLearning from data, evolving to be,\nHuman-like, yet always.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 22,
+        "total": 439
+      },
+      "speed": {
+        "latency_seconds": 0.276,
+        "tokens_per_second": 79.7,
+        "llm_seconds": 0.247
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a computer system that can understand and generate human language, often using deep learning algorithms to process vast amounts of text data.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 41,
+        "total": 325
+      },
+      "speed": {
+        "latency_seconds": 0.355,
+        "tokens_per_second": 115.44,
+        "llm_seconds": 0.309
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 1
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 412,
+        "completion": 1,
+        "total": 413
+      },
+      "speed": {
+        "latency_seconds": 0.095,
+        "tokens_per_second": 10.57,
+        "llm_seconds": 0.084
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model on labeled data, where the output is known for each input example. It learns a function that maps inputs to outputs. Unsupervised learning involves training a model on unlabeled data, where the output is not known. It learns patterns and relationships within the data without a predefined output.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 85,
+        "total": 372
+      },
+      "speed": {
+        "latency_seconds": 0.652,
+        "tokens_per_second": 130.3,
+        "llm_seconds": 0.64
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "Sure! Here's a Python function that computes the first 10 Fibonacci numbers:\n\n```python\ndef fibonacci_numbers():\n    fib_sequence = [0, 1]\n    for i in range(2, 10):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    return fib_sequence\n\n# Example usage:\nfib_sequence = fibonacci_numbers()\nprint(fib_sequence)\n```\n\nTo run this code, simply call the `fibonacci_numbers` function and print the result.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 104,
+        "total": 525
+      },
+      "speed": {
+        "latency_seconds": 1.122,
+        "tokens_per_second": 92.7,
+        "llm_seconds": 1.094
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Machine whispers in code,\nIntelligence dances through pixels,\nSilent, powerful.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 19,
+        "total": 436
+      },
+      "speed": {
+        "latency_seconds": 0.201,
+        "tokens_per_second": 94.57,
+        "llm_seconds": 0.189
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a sophisticated AI system that can process and generate human-like language, often trained on vast amounts of text data.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 36,
+        "total": 320
+      },
+      "speed": {
+        "latency_seconds": 0.302,
+        "tokens_per_second": 119.04,
+        "llm_seconds": 0.29
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 2
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 412,
+        "completion": 1,
+        "total": 413
+      },
+      "speed": {
+        "latency_seconds": 0.089,
+        "tokens_per_second": 11.27,
+        "llm_seconds": 0.078
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves labeled data, where the model learns from input-output pairs to make predictions. Unsupervised learning uses unlabeled data to discover patterns and group similar items without prior knowledge of labels.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 58,
+        "total": 345
+      },
+      "speed": {
+        "latency_seconds": 0.422,
+        "tokens_per_second": 137.38,
+        "llm_seconds": 0.41
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "Plan: Create a file named `fibonacci.py` and write the code to compute the first 10 Fibonacci numbers.\n\n```python\n# fibonacci.py\n\ndef fibonacci(n):\n    \"\"\"Compute the first n Fibonacci numbers.\"\"\"\n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])\n    return fib_sequence\n\nif __name__ == \"__main__\":\n    n = 10\n    fib_numbers = fibonacci(n)\n    print(f\"The first {n} Fibonacci numbers are: {fib_numbers}\")\n\n    # Usage example\n    print(\"\\nUsage:\")\n    print(\"To compute the first 10 Fibonacci numbers, run the script.\")\n    print(\"To change the number of Fibonacci numbers computed, modify the `n` variable.\")\n```\n\nTo run this code, save it to a file named `fibonacci.py` and execute it using Python:\n\n```bash\npython fibonacci.py\n```\n\nThis will output the first 10 Fibonacci numbers and provide a usage example.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 219,
+        "total": 640
+      },
+      "speed": {
+        "latency_seconds": 2.18,
+        "tokens_per_second": 100.48,
+        "llm_seconds": 2.169
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Code whispers, thoughts flow,\nAI learns, grows, dreams anew,\nIn silent yet wise.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 20,
+        "total": 437
+      },
+      "speed": {
+        "latency_seconds": 0.246,
+        "tokens_per_second": 81.17,
+        "llm_seconds": 0.221
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a computer program that can understand and generate human language, typically trained on extensive datasets of text to improve its accuracy and responsiveness.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 46,
+        "total": 330
+      },
+      "speed": {
+        "latency_seconds": 0.327,
+        "tokens_per_second": 140.71,
+        "llm_seconds": 0.319
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 3
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 412,
+        "completion": 1,
+        "total": 413
+      },
+      "speed": {
+        "latency_seconds": 0.092,
+        "tokens_per_second": 10.82,
+        "llm_seconds": 0.083
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model on labeled data, where the input-output pairs are known. The model learns to predict outputs based on the patterns in the labeled data. Unsupervised learning, on the other hand, uses unlabeled data and attempts to find patterns or groupings within the data without any prior knowledge of the output.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 86,
+        "total": 373
+      },
+      "speed": {
+        "latency_seconds": 0.682,
+        "tokens_per_second": 126.05,
+        "llm_seconds": 0.672
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "Plan:\n1. Create a new Python file named `fibonacci.py`.\n2. Define a function `fibonacci(n)` to compute the first `n` Fibonacci numbers.\n\n```python\n# fibonacci.py\n\ndef fibonacci(n):\n    \"\"\"Compute the first n Fibonacci numbers.\"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    return fib_sequence\n\n# Usage example\nif __name__ == \"__main__\":\n    print(fibonacci(10))\n```\n\nTo run this code, save it in a file named `fibonacci.py`, and execute it using Python. You can then call the `fibonacci(10)` function to get the first 10 Fibonacci numbers.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 183,
+        "total": 604
+      },
+      "speed": {
+        "latency_seconds": 2.053,
+        "tokens_per_second": 89.15,
+        "llm_seconds": 2.042
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "AI whispers,  \nKnowledge unseen,  \nMachine learning grows.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 14,
+        "total": 431
+      },
+      "speed": {
+        "latency_seconds": 0.187,
+        "tokens_per_second": 75.03,
+        "llm_seconds": 0.161
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence designed to understand and generate human-like language, capable of handling vast amounts of text data to provide accurate responses to a wide range of queries.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 55,
+        "total": 339
+      },
+      "speed": {
+        "latency_seconds": 0.407,
+        "tokens_per_second": 135.25,
+        "llm_seconds": 0.396
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 4
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 412,
+        "completion": 7,
+        "total": 419
+      },
+      "speed": {
+        "latency_seconds": 0.153,
+        "tokens_per_second": 45.64,
+        "llm_seconds": 0.132
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training an AI model on labeled data, where each input-output pair is explicitly provided. It is used for tasks like classification and regression where the model learns from past examples to make predictions. Unsupervised learning, on the other hand, involves training a model on unlabeled data, where only the inputs are provided. It is used for tasks like clustering, dimensionality reduction, and anomaly detection where the model learns patterns and structures from the data without explicit guidance.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 133,
+        "total": 420
+      },
+      "speed": {
+        "latency_seconds": 1.017,
+        "tokens_per_second": 130.72,
+        "llm_seconds": 0.998
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "1. Create `fibonacci.py` file.\n2. Write Python code to compute the first 10 Fibonacci numbers.\n\n```python\n# fibonacci.py\n\ndef fibonacci(n):\n    if n <= 0:\n        return \"Input should be a positive integer.\"\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_fib = fib_sequence[-1] + fib_sequence[-2]\n        fib_sequence.append(next_fib)\n    \n    return fib_sequence\n\n# Example usage\nif __name__ == \"__main__\":\n    number_of_fibonacci = 10\n    print(f\"The first {number_of_fibonacci} Fibonacci numbers are: {fibonacci(number_of_fibonacci)}\")\n```\n\n3. Run the `fibonacci.py` file.\n\n```bash\npython fibonacci.py\n```\n\nExplanation:\n- The function `fibonacci` computes the first `n` Fibonacci numbers.\n- It handles edge cases where `n` is less than or equal to 0, and returns an appropriate message.\n- For `n` equal to 1 or 2, it returns the corresponding Fibonacci sequence.\n- For `n` greater than 2, it uses a loop to calculate the Fibonacci numbers and stores them in a list.\n- The example usage at the end of the script demonstrates how to call the `fibonacci` function and print the result.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 295,
+        "total": 716
+      },
+      "speed": {
+        "latency_seconds": 3.157,
+        "tokens_per_second": 93.44,
+        "llm_seconds": 3.145
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Intelligence in code,\nLearning from data,\nMinds grow with each step.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 17,
+        "total": 434
+      },
+      "speed": {
+        "latency_seconds": 0.234,
+        "tokens_per_second": 72.78,
+        "llm_seconds": 0.203
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence system trained on vast amounts of text data to generate human-like responses to various prompts.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 39,
+        "total": 323
+      },
+      "speed": {
+        "latency_seconds": 0.327,
+        "tokens_per_second": 119.38,
+        "llm_seconds": 0.298
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 5
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 412,
+        "completion": 1,
+        "total": 413
+      },
+      "speed": {
+        "latency_seconds": 0.108,
+        "tokens_per_second": 9.27,
+        "llm_seconds": 0.079
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model with labeled data, where the model learns to predict outputs based on inputs. Unsupervised learning involves training a model with unlabeled data, where the model learns to find patterns or structure in the data.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 64,
+        "total": 351
+      },
+      "speed": {
+        "latency_seconds": 0.518,
+        "tokens_per_second": 123.66,
+        "llm_seconds": 0.488
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "Sure! Here's a Python function to compute the first 10 Fibonacci numbers:\n\n```python\ndef fibonacci():\n    fibs = [0, 1]\n    for i in range(2, 10):\n        fibs.append(fibs[-1] + fibs[-2])\n    return fibs\n\n# Example usage:\nprint(fibonacci())\n```\n\nTo run this code, save it to a file, for example `fibonacci.py`, and then execute it using Python:\n\n```sh\npython fibonacci.py\n```\n\nThis will output the first 10 Fibonacci numbers: `[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]`.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 115,
+        "total": 536
+      },
+      "speed": {
+        "latency_seconds": 1.628,
+        "tokens_per_second": 70.64,
+        "llm_seconds": 1.617
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Learning from data,\nIntelligence grows in code,\nAI dreams, day by day.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 17,
+        "total": 434
+      },
+      "speed": {
+        "latency_seconds": 0.216,
+        "tokens_per_second": 78.84,
+        "llm_seconds": 0.205
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a computer system that can understand and generate human language, typically trained on vast amounts of text data.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 35,
+        "total": 319
+      },
+      "speed": {
+        "latency_seconds": 0.315,
+        "tokens_per_second": 110.96,
+        "llm_seconds": 0.28
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 6
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 412,
+        "completion": 7,
+        "total": 419
+      },
+      "speed": {
+        "latency_seconds": 0.165,
+        "tokens_per_second": 42.32,
+        "llm_seconds": 0.133
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training algorithms on labeled data, where the input and output are known. It is used for tasks like classification and regression. Unsupervised learning, on the other hand, involves training algorithms on unlabeled data, where only the input is known. It is used for tasks like clustering and dimensionality reduction.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 87,
+        "total": 374
+      },
+      "speed": {
+        "latency_seconds": 0.738,
+        "tokens_per_second": 117.95,
+        "llm_seconds": 0.725
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "Plan: Create a Python script to calculate the first 10 Fibonacci numbers.\n\n```python\ndef fibonacci(n):\n    \"\"\"Return a list of the first n Fibonacci numbers.\"\"\"\n    fib_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fib_sequence.append(a)\n        a, b = b, a + b\n    return fib_sequence\n\n# Usage example:\nif __name__ == \"__main__\":\n    print(fibonacci(10))\n```\n\nTo run this code, save it to a file named `fibonacci.py`, open a terminal or command prompt, navigate to the directory where the file is saved, and execute it with `python fibonacci.py`. This will print the first 10 Fibonacci numbers.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 152,
+        "total": 573
+      },
+      "speed": {
+        "latency_seconds": 1.687,
+        "tokens_per_second": 90.11,
+        "llm_seconds": 1.674
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Coding machines learn,\nThrough data and logic, they grow,\nIntelligence in every line.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 21,
+        "total": 438
+      },
+      "speed": {
+        "latency_seconds": 0.255,
+        "tokens_per_second": 82.27,
+        "llm_seconds": 0.22
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a computer program that can understand and generate human language, using vast amounts of text data to learn and improve its language understanding and generation capabilities.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 50,
+        "total": 334
+      },
+      "speed": {
+        "latency_seconds": 0.389,
+        "tokens_per_second": 128.42,
+        "llm_seconds": 0.362
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 7
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 412,
+        "completion": 7,
+        "total": 419
+      },
+      "speed": {
+        "latency_seconds": 0.154,
+        "tokens_per_second": 45.38,
+        "llm_seconds": 0.143
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves labeled data, where the model is trained on input-output pairs to predict the output for new data. It requires human labeling of the data to ensure the model learns correctly. Unsupervised learning, on the other hand, uses unlabeled data to discover patterns or relationships within the data. It does not rely on labeled examples but aims to group similar data points together or find structures in the data.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 109,
+        "total": 396
+      },
+      "speed": {
+        "latency_seconds": 0.919,
+        "tokens_per_second": 118.59,
+        "llm_seconds": 0.896
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "Sure! Here's the Python function that computes the first 10 Fibonacci numbers:\n\n```python\ndef fibonacci(n):\n    fib = [0, 1]\n    for i in range(2, n):\n        fib.append(fib[i - 1] + fib[i - 2])\n    return fib\n\n# Example usage:\nprint(fibonacci(10))\n```\n\nTo run this code, you can copy it into a Python file, save it with a `.py` extension, and then execute it using a Python interpreter. The function `fibonacci` generates the first 10 Fibonacci numbers and returns them as a list.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 120,
+        "total": 541
+      },
+      "speed": {
+        "latency_seconds": 1.455,
+        "tokens_per_second": 82.46,
+        "llm_seconds": 1.434
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Machine whispers through code,\nLearning, evolving, smarter each day,\nArtificial minds, forever learning.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 26,
+        "total": 443
+      },
+      "speed": {
+        "latency_seconds": 0.264,
+        "tokens_per_second": 98.6,
+        "llm_seconds": 0.242
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a supercomputer designed to understand and generate human language, capable of processing vast amounts of text data to improve its accuracy and response to various inputs.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 49,
+        "total": 333
+      },
+      "speed": {
+        "latency_seconds": 0.388,
+        "tokens_per_second": 126.32,
+        "llm_seconds": 0.377
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 8
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "Paris",
+      "tokens": {
+        "prompt": 412,
+        "completion": 1,
+        "total": 413
+      },
+      "speed": {
+        "latency_seconds": 0.101,
+        "tokens_per_second": 9.92,
+        "llm_seconds": 0.083
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model using labeled data, where the model learns to predict outcomes based on inputs. Unsupervised learning, on the other hand, uses unlabeled data to find patterns or structures within the data without a predefined set of outcomes.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 68,
+        "total": 355
+      },
+      "speed": {
+        "latency_seconds": 0.571,
+        "tokens_per_second": 119.09,
+        "llm_seconds": 0.539
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "```python\ndef fibonacci():\n    fib_sequence = [0, 1]\n    for i in range(2, 10):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    return fib_sequence\n\nprint(fibonacci())\n```\nTo run this code, simply call the `fibonacci` function and print the result.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 67,
+        "total": 488
+      },
+      "speed": {
+        "latency_seconds": 0.875,
+        "tokens_per_second": 76.57,
+        "llm_seconds": 0.852
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Intelligent mind,\nLearning, evolving,\nInnovation never ends.",
+      "tokens": {
+        "prompt": 417,
+        "completion": 15,
+        "total": 432
+      },
+      "speed": {
+        "latency_seconds": 0.198,
+        "tokens_per_second": 75.89,
+        "llm_seconds": 0.166
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of AI that can understand and generate human-like text based on vast amounts of data, enabling applications such as language translation, chatbots, and content generation.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 51,
+        "total": 335
+      },
+      "speed": {
+        "latency_seconds": 0.441,
+        "tokens_per_second": 115.7,
+        "llm_seconds": 0.411
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 9
+    },
+    {
+      "success": true,
+      "prompt": "What is the capital of France?",
+      "output": "The capital of France is Paris.",
+      "tokens": {
+        "prompt": 412,
+        "completion": 7,
+        "total": 419
+      },
+      "speed": {
+        "latency_seconds": 0.153,
+        "tokens_per_second": 45.87,
+        "llm_seconds": 0.141
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "simple_fact",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Explain the difference between supervised and unsupervised learning.",
+      "output": "Supervised learning involves training a model using labeled data, where the input-output pairs are known. It is used for tasks like classification and regression. Unsupervised learning, on the other hand, uses unlabeled data to find patterns or groups. It is useful for tasks like clustering and anomaly detection.",
+      "tokens": {
+        "prompt": 287,
+        "completion": 78,
+        "total": 365
+      },
+      "speed": {
+        "latency_seconds": 0.661,
+        "tokens_per_second": 117.95,
+        "llm_seconds": 0.647
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "reasoning",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Write a Python function that computes the first 10 Fibonacci numbers.",
+      "output": "1. Plan: Create a Python file named `fibonacci.py` and define a function `fibonacci` to compute the first 10 Fibonacci numbers.\n\n```python\n# fibonacci.py\n\ndef fibonacci(n):\n    fib_sequence = []\n    for i in range(n):\n        if i == 0:\n            fib_sequence.append(0)\n        elif i == 1:\n            fib_sequence.append(1)\n        else:\n            fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    return fib_sequence\n\n# Usage example\nif __name__ == \"__main__\":\n    print(fibonacci(10))\n```\n\n2. Explanation: The function `fibonacci` generates the first 10 Fibonacci numbers using a simple for loop. It initializes an empty list `fib_sequence` to store the numbers. The first two numbers are set to 0 and 1, respectively. For subsequent numbers, it calculates each number as the sum of the previous two numbers. The function returns the list of Fibonacci numbers.\n\n3. Run the code: To run the code, save it in a file named `fibonacci.py` and execute it using the Python interpreter. The output will be the first 10 Fibonacci numbers: `[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]`.\n\n4. Test the code: You can modify the `n` parameter in the `fibonacci(10)` call to test other lengths of the Fibonacci sequence.",
+      "tokens": {
+        "prompt": 421,
+        "completion": 304,
+        "total": 725
+      },
+      "speed": {
+        "latency_seconds": 3.394,
+        "tokens_per_second": 89.56,
+        "llm_seconds": 3.383
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "code",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Write a short haiku about artificial intelligence.",
+      "output": "Intelligence flows  \nMachine learns and adapts  \nArtificial dreams evolve",
+      "tokens": {
+        "prompt": 417,
+        "completion": 18,
+        "total": 435
+      },
+      "speed": {
+        "latency_seconds": 0.195,
+        "tokens_per_second": 92.5,
+        "llm_seconds": 0.186
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "creative",
+      "run": 10
+    },
+    {
+      "success": true,
+      "prompt": "Explain what a large language model is in two sentences.",
+      "output": "A large language model is a type of artificial intelligence system designed to understand, generate, and analyze human language, with vast amounts of data to learn from.",
+      "tokens": {
+        "prompt": 284,
+        "completion": 42,
+        "total": 326
+      },
+      "speed": {
+        "latency_seconds": 0.379,
+        "tokens_per_second": 110.69,
+        "llm_seconds": 0.368
+      },
+      "jev": {
+        "enabled": false,
+        "decisions": 0,
+        "tokens": 0,
+        "seconds": 0.0
+      },
+      "mode": "jev_off",
+      "prompt_id": "explain",
+      "run": 10
+    }
+  ],
+  "summary": {
+    "jev_on": {
+      "requests": 50,
+      "avg_latency_seconds": 0.895,
+      "avg_tokens_per_second": 95.02,
+      "avg_llm_seconds": 0.873,
+      "avg_jev_seconds": 0.001,
+      "llm_tokens_per_second": 117.31,
+      "total_completion_tokens": 5121,
+      "total_prompt_tokens": 15540,
+      "total_jev_tokens": 840
+    },
+    "jev_off": {
+      "requests": 50,
+      "avg_latency_seconds": 0.657,
+      "avg_tokens_per_second": 89.02,
+      "avg_llm_seconds": 0.638,
+      "avg_jev_seconds": 0.0,
+      "llm_tokens_per_second": 100.22,
+      "total_completion_tokens": 3195,
+      "total_prompt_tokens": 18210,
+      "total_jev_tokens": 0
+    }
+  }
+}

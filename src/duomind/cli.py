@@ -20,6 +20,7 @@ from duomind.config import config
 from duomind.utils import (
     delete_jev_key,
     download_hf_file,
+    download_llama_server,
     get_binaries_dir,
     get_data_dir,
     get_llama_server_pid_file,
@@ -36,9 +37,6 @@ console = Console(force_terminal=True, legacy_windows=False)
 
 # Detect Git Bash / incompatible terminal
 IS_GITBASH = os.environ.get("TERM") == "xterm-256color" and sys.platform == "win32"
-
-CREATE_NO_WINDOW = 0x08000000
-CREATE_NEW_PROCESS_GROUP = 0x00000200
 
 
 def ask_confirm(message: str, default: bool = True) -> bool:
@@ -76,6 +74,88 @@ def ask_select(message: str, choices: list[str]) -> str:
                 pass
             console.print("[red]Invalid choice. Try again.[/red]")
     return questionary.select(message, choices=choices).ask()
+
+
+def ask_text(message: str) -> str:
+    """Free-text input with Git Bash compatibility."""
+    if IS_GITBASH:
+        return input(f"{message}: ").strip()
+    return questionary.text(message).ask() or ""
+
+
+def _print_control_commands() -> None:
+    """Print the special commands that control the DuoMind agent."""
+    console.print("\n[bold cyan]Control commands:[/bold cyan]")
+    console.print("  duomind start     Start the server in the background")
+    console.print("  duomind stop      Stop the server")
+    console.print("  duomind status    Show server, model, and Jev status")
+    console.print("  duomind logs      View server logs")
+    console.print("  duomind models    List / switch models")
+    console.print("  duomind jev       Toggle Jev on/off/status")
+    console.print("  duomind doctor    Run diagnostics")
+
+
+def _is_server_running() -> bool:
+    """Return True if the DuoMind server process is alive."""
+    pid_file = get_pid_file()
+    if not pid_file.exists():
+        return False
+    try:
+        pid = int(pid_file.read_text())
+        return psutil.pid_exists(pid)
+    except (ValueError, OSError):
+        return False
+
+
+jev_app = typer.Typer(help="Toggle Jev on/off or show its status")
+
+
+@jev_app.callback(invoke_without_command=True)
+def jev(ctx: typer.Context):
+    """Show Jev status when run without a subcommand."""
+    if ctx.invoked_subcommand is None:
+        jev_status()
+
+
+@jev_app.command("on")
+def jev_on():
+    """Re-enable Jev classification."""
+    cfg = config.load()
+    cfg.jev_enabled = True
+    config.save(cfg)
+    if not load_jev_key():
+        console.print("[yellow]Warning: no Jev API key found. Run 'duomind setup' first.[/yellow]")
+    console.print("[green]OK[/green] Jev enabled.")
+    if _is_server_running():
+        console.print(
+            "[yellow]The server reads this setting on every request. "
+            "If it was started with Jev disabled, restart it to re-initialize Jev.[/yellow]"
+        )
+
+
+@jev_app.command("off")
+def jev_off():
+    """Disable Jev classification (use local fallback)."""
+    cfg = config.load()
+    cfg.jev_enabled = False
+    config.save(cfg)
+    console.print("[green]OK[/green] Jev disabled. The server now uses the local fallback classifier.")
+
+
+@jev_app.command("status")
+def jev_status():
+    """Show whether Jev is currently enabled."""
+    cfg = config.load()
+    state = "[green]Enabled[/green]" if cfg.jev_enabled else "[yellow]Disabled[/yellow]"
+    console.print(f"Jev: {state}")
+    key = load_jev_key()
+    if key:
+        console.print(f"API key: {mask_key(key)}")
+    else:
+        console.print("API key: [red]not found[/red]")
+
+
+app.add_typer(jev_app, name="jev")
 
 
 @app.command()
@@ -225,69 +305,104 @@ def setup():
     model_choice = ask_select(
         "Choose a model:",
         [f"{i}. {m['name']}" for i, m in enumerate(available_models, 1)]
-        + ["Custom (paste Hugging Face URL)"]
+        + ["Custom (Hugging Face repo or URL)"]
+        + ["Custom (Ollama model)"]
     )
 
-    if model_choice.startswith("Custom"):
-        console.print("[yellow]Custom model selection not implemented yet. Using model 1.[/yellow]")
-        selected_model = available_models[0]
+    use_ollama = False
+    selected_model = None
+    ollama_model_name = None
+
+    if model_choice.startswith("Custom (Ollama"):
+        use_ollama = True
+        ollama_model_name = ask_text("Enter the Ollama model name (e.g. qwen2.5:3b)")
+        if not ollama_model_name:
+            console.print("[red]Setup cancelled. Model name required.[/red]")
+            sys.exit(1)
+        selected_model = {
+            "id": ollama_model_name,
+            "name": f"Ollama: {ollama_model_name}",
+            "size_gb": 0.0,
+        }
+    elif model_choice.startswith("Custom (Hugging Face"):
+        repo_id = ask_text("Enter the Hugging Face repo (e.g. bartowski/Qwen2.5-3B-Instruct-GGUF)")
+        filename = ask_text("Enter the GGUF filename (e.g. qwen2.5-3b-instruct-q4_k_m.gguf)")
+        if not repo_id or not filename:
+            console.print("[red]Setup cancelled. Repo and filename required.[/red]")
+            sys.exit(1)
+        selected_model = {
+            "id": repo_id.split("/")[-1],
+            "name": repo_id,
+            "hf_repo": repo_id,
+            "filename": filename,
+            "size_gb": 0.0,
+        }
     else:
         model_idx = int(model_choice.split(".")[0]) - 1
         selected_model = available_models[model_idx]
 
-    # Step 6: Download llama-server
-    console.print("\n[bold]Step 6 of 9: Download llama-server[/bold]")
-    console.print("Downloading llama.cpp inference engine...")
+    # Step 6: Download llama-server (llama.cpp backend only)
+    if not use_ollama:
+        console.print("\n[bold]Step 6 of 9: Download llama-server[/bold]")
+        console.print("Downloading the llama.cpp inference engine...")
 
-    # For now, tell user to download manually
-    console.print(
-        "[yellow]WARNING: Automated download not implemented yet.[/yellow]\n"
-        "Please download llama-server.exe manually:\n"
-        "1. Go to: https://github.com/ggerganov/llama.cpp/releases\n"
-        "2. Download the Windows CUDA build (llama-*-bin-win-cuda*.zip)\n"
-        f"3. Extract llama-server.exe to: {get_binaries_dir()}\n"
-    )
+        try:
+            binary = download_llama_server()
+            console.print(f"[green]OK[/green] llama-server ready at {binary}")
+        except Exception as e:
+            console.print(f"[yellow]Automated download failed: {e}[/yellow]")
+            console.print(
+                f"Please download llama-server manually:\n"
+                f"1. Go to: https://github.com/ggml-org/llama.cpp/releases\n"
+                f"2. Download the build for your platform\n"
+                f"3. Extract llama-server to: {get_binaries_dir()}\n"
+            )
+            if not ask_confirm("Have you placed llama-server in the directory?"):
+                console.print("[red]Setup cannot continue without llama-server[/red]")
+                sys.exit(1)
 
-    if not ask_confirm("Have you placed llama-server.exe in the directory?"):
-        console.print("[red]Setup cannot continue without llama-server.exe[/red]")
-        sys.exit(1)
-
-    # Step 7: Download model
-    console.print("\n[bold]Step 7 of 9: Download AI Model[/bold]")
-    console.print(f"Downloading {selected_model['name']} ({selected_model['size_gb']:.1f}GB)...")
-    console.print("This may take several minutes depending on your internet speed.\n")
-
-    try:
-        model_path = download_hf_file(
-            repo_id=selected_model["hf_repo"],
-            filename=selected_model["filename"],
-            dest_dir=get_models_dir(),
-            show_progress=True
-        )
-        console.print(f"[green]OK[/green] Model downloaded to {model_path}")
-
-        # Save model path to config
-        cfg.model_path = str(model_path)
+    # Step 7: Download model (skip for Ollama)
+    console.print("\n[bold]Step 7 of 9: Prepare AI Model[/bold]")
+    if use_ollama:
+        console.print(f"Using Ollama model: [bold]{ollama_model_name}[/bold]")
+        console.print("Ensure Ollama is installed and running, then pull the model:")
+        console.print(f"  ollama pull {ollama_model_name}")
+        cfg.llm_backend = "ollama"
+        cfg.model_path = ollama_model_name
         config.save(cfg)
-
-    except Exception as e:
-        console.print(f"[red]FAILED[/red] Download failed: {e}")
-        sys.exit(1)
+    else:
+        console.print(f"Downloading {selected_model['name']}...")
+        console.print("This may take several minutes depending on your internet speed.\n")
+        try:
+            model_path = download_hf_file(
+                repo_id=selected_model["hf_repo"],
+                filename=selected_model["filename"],
+                dest_dir=get_models_dir(),
+                show_progress=True
+            )
+            console.print(f"[green]OK[/green] Model downloaded to {model_path}")
+            cfg.llm_backend = "llamacpp"
+            cfg.model_path = str(model_path)
+            config.save(cfg)
+        except Exception as e:
+            console.print(f"[red]FAILED[/red] Download failed: {e}")
+            sys.exit(1)
 
     # Step 8: Start server
     console.print("\n[bold]Step 8 of 9: Start DuoMind Server[/bold]")
     console.print("Starting server for self-test...")
-
-    # Start would happen here, but we'll skip for now
     console.print("[yellow]WARNING: Auto-start not implemented. Use 'duomind start' manually.[/yellow]")
 
     # Step 9: Final instructions
     console.print("\n[bold green]Step 9 of 9: Setup Complete![/bold green]\n")
 
+    model_display = selected_model["name"] if selected_model else "Not configured"
+    backend_label = "Ollama" if use_ollama else "llama.cpp"
     console.print(Panel(
         f"[bold]Your DuoMind server is ready![/bold]\n\n"
         f"Base URL: http://127.0.0.1:{cfg.port}/v1\n"
-        f"Model: {selected_model['name']}\n"
+        f"Backend: {backend_label}\n"
+        f"Model: {model_display}\n"
         f"Jev: Enabled\n\n"
         f"[bold cyan]To start DuoMind:[/bold cyan]\n"
         f"  duomind start\n\n"
@@ -295,9 +410,10 @@ def setup():
         f"  API Provider: OpenAI Compatible\n"
         f"  Base URL: http://127.0.0.1:{cfg.port}/v1\n"
         f"  API Key: (leave blank)\n"
-        f"  Model: {selected_model['id']}\n",
+        f"  Model: {selected_model['id'] if selected_model else 'unknown'}\n",
         border_style="green"
     ))
+    _print_control_commands()
 
 
 @app.command()
@@ -309,7 +425,8 @@ def start():
         console.print("[red]No model configured. Run 'duomind setup' first.[/red]")
         sys.exit(1)
 
-    if not Path(cfg.model_path).exists():
+    # Only llama.cpp models are local files; Ollama models are names.
+    if cfg.llm_backend == "llamacpp" and not Path(cfg.model_path).exists():
         console.print(f"[red]Model file not found: {cfg.model_path}[/red]")
         sys.exit(1)
 
@@ -344,9 +461,11 @@ def start():
     log_handle = open(log_file, "a")
 
     if sys.platform == "win32":
+        create_no_window = 0x08000000
+        create_new_process_group = 0x00000200
         process = subprocess.Popen(
             cmd,
-            creationflags=CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP,
+            creationflags=create_no_window | create_new_process_group,
             stdout=log_handle,
             stderr=log_handle,
         )
@@ -369,6 +488,20 @@ def start():
     console.print(f"[green]OK[/green] Server started (PID {process.pid})")
     console.print(f"Base URL: {base_url}/v1")
     console.print(f"Logs: {log_file}")
+
+    # Show connection summary
+    jev_connected = bool(cfg.jev_enabled and load_jev_key())
+    console.print(
+        f"Model: {cfg.model_path or 'Not configured'}"
+    )
+    console.print(
+        f"Jev: {'[green]Connected[/green]' if jev_connected else '[yellow]Not connected[/yellow]'}"
+    )
+    console.print("\n[bold]Connect Cline / Kilo Code with:[/bold]")
+    console.print(f"  Base URL: {base_url}/v1")
+    console.print("  API Key:  (leave blank)")
+    console.print(f"  Model:    {cfg.model_path or 'unknown'}")
+    _print_control_commands()
 
 
 def _wait_for_server(base_url: str, timeout: int = 360, pid: Optional[int] = None) -> bool:
@@ -497,6 +630,20 @@ def status():
 
 
 @app.command()
+def commands():
+    """Show how to control the DuoMind agent."""
+    cfg = config.load()
+    console.print(Panel.fit(
+        "[bold cyan]DuoMind Agent Control[/bold cyan]\n\n"
+        f"Base URL: http://{cfg.host}:{cfg.port}/v1\n"
+        f"Model:    {cfg.model_path or 'Not configured'}\n"
+        f"Jev:      {'Enabled' if cfg.jev_enabled else 'Disabled'}",
+        border_style="cyan"
+    ))
+    _print_control_commands()
+
+
+@app.command()
 def logs():
     """Show server logs."""
     log_file = get_logs_dir() / "server.log"
@@ -570,6 +717,7 @@ def main(ctx: typer.Context):
                 "Stop server",
                 "Check status",
                 "View logs",
+                "Show control commands",
                 "Run diagnostics",
                 "Uninstall",
                 "Exit"
@@ -586,6 +734,8 @@ def main(ctx: typer.Context):
             status()
         elif choice == "View logs":
             logs()
+        elif choice == "Show control commands":
+            commands()
         elif choice == "Run diagnostics":
             doctor()
         elif choice == "Uninstall":

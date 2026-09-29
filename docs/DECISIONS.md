@@ -6,19 +6,19 @@
 
 ---
 
-## 1. VRAM Constraint: 6GB Primary, Optional 14B Model
+## 1. VRAM Constraint: 6GB Not 12GB
 
 **Context**: Original prompt assumed RTX 3060 with 12GB VRAM. Actual GPU is 6GB variant (laptop).
 
-**Decision**: Primary model selection targets 2-4B models for 6GB VRAM, plus one optional 14B model (Phi-4) for machines with 10GB+ VRAM.
+**Decision**: Adjusted model selection to 2-4B parameter models instead of 8-14B.
 
 **Rationale**:
 - 2-4B models with Q4_K_M quantization use ~2-3GB VRAM
 - Leaves ~3GB for context window and KV cache
-- Phi-4 14B (Q4_K_M, ~8.4GB) is listed first but the setup wizard's "Fit?" column flags it as not fitting on 6GB
+- 8-14B models would not fit even with quantization
 
 **Models chosen**:
-1. Phi-4 14B (optional, needs 10GB+ VRAM)
+1. Phi-4 Mini 3.8B (if exists)
 2. Qwen2.5 3B Instruct
 3. Qwen2.5-Coder 3B
 4. Gemma 2 2B
@@ -66,14 +66,14 @@
 **Context**: Author specified decision points but not exact stage breakdown.
 
 **Decision**: 
-- **PRE**: 6 decisions (needs_generation, needs_reasoning, intent, complexity, ambiguity, safety)
+- **PRE**: 9 decisions (needs_generation, needs_reasoning, intent, complexity, ambiguity, safety, verbosity, format, needs_tool)
 - **MID**: 4 decisions (on_track, step_complete, should_stop, confidence_mid)
-- **POST**: 3 decisions (answer_complete, matches_request, needs_retry)
+- **POST**: 5 decisions (answer_complete, matches_request, needs_retry, too_verbose, correct_format)
 
 **Rationale**:
-- PRE: Gate generation and route simple requests
+- PRE: Gate generation, route simple requests, and steer verbosity/format/tool use
 - MID: Steer generation at checkpoints (configurable, max 3 by default)
-- POST: Validate output quality
+- POST: Validate output quality and trim verbose or mis-formatted answers
 
 **MID checkpoint trigger**: Only for requests where PRE.complexity >= 1 (moderate or complex). Simple requests skip MID.
 
@@ -197,8 +197,6 @@
 
 **Rationale**: llama-server loads model on startup, can't hot-swap. Restart is necessary.
 
-**Current status**: The `duomind models` subcommand is not implemented yet. Switching models currently requires re-running `duomind setup` or editing `model_path` in `config.toml` manually.
-
 ---
 
 ## 13. Jev ON/OFF: Runtime Toggle
@@ -211,24 +209,23 @@
 
 **Benchmark**: `scripts/benchmark.py` runs same prompts with Jev on and off, compares results.
 
-**Current status**: The `duomind jev` subcommand is not implemented yet. Toggling Jev currently requires editing `jev_enabled` in `config.toml` and restarting the server.
-
 ---
 
-## 14. Segmented Generation: Not Fully Implemented
+## 14. Segmented Generation: Wired
 
 **Context**: Author requested "MID checkpoints" where generation pauses, Jev classifies, resumes.
 
-**Decision**: Skeleton in place but not fully functional in initial version.
+**Decision**: Segmented generation is implemented for non-streaming requests.
 
-**Rationale**: 
-- llama.cpp `/completion` endpoint generates in one pass
-- Implementing stop-sequences + resume + state tracking is complex
-- Deferred to future version
+**How it works**:
+1. Split `max_tokens` into segments of `mid_segment_tokens` (default 160).
+2. Generate one segment, then run MID decisions (on_track, step_complete, should_stop, confidence_mid).
+3. Stop early if `should_stop` is true or `on_track` is false; otherwise continue to the next segment.
+4. Repeat up to `max_mid_checkpoints` (default 3) times.
 
-**Current behavior**: MID decisions skipped. PRE and POST work fully.
+**Trigger**: Only for requests where PRE.complexity >= 1 (moderate or complex). Simple requests and tool-call requests skip MID.
 
-**Future**: Add stop sequences at reasoning step markers (e.g., "Step N:"), batch MID decisions, resume generation.
+**Streaming**: MID steering is non-streaming only; streaming requests use PRE gating plus the injected steering skill.
 
 ---
 
@@ -275,18 +272,16 @@
 
 ---
 
-## 18. Models.json: 5 Models (1 Large + 4 Small)
+## 18. Models.json: 5 Models for 6GB VRAM
 
 **Context**: Original prompt suggested Phi-4 3.8B, Qwen 8B, Gemma 12B. Too large for 6GB.
 
-**Decision**: Curated list with Q4_K_M quantization — one large model and four 2-3B models:
-1. Phi-4 14B - high quality, needs 10GB+ VRAM
+**Decision**: Curated list of 2-4B models, all with Q4_K_M quantization:
+1. Phi-4 Mini 3.8B (if exists) - general purpose
 2. Qwen2.5 3B Instruct - multilingual, long context
 3. Qwen2.5-Coder 3B - code-focused
 4. Gemma 2 2B - smallest, fastest
 5. Llama 3.2 3B - long context, Meta quality
-
-**Correction (Phi-4 Mini mislabel)**: The original `models.json` listed a "Phi-4 Mini (3.8B)" entry whose `hf_repo`/`filename` actually pointed to the full Phi-4 (14B, ~8.4GB). Selecting it on a 6GB machine downloaded the full model and crashed. The entry has been relabeled honestly as "Phi-4 (14B)" with correct size and VRAM requirements. A true Phi-4 Mini entry is not currently listed.
 
 **Verification**: Must check Hugging Face repos exist before finalizing list.
 
@@ -325,19 +320,64 @@
 
 **Windows-specific**:
 - Path handling via `pathlib` (works everywhere)
-- Process management: `CREATE_NO_WINDOW` on Windows, `start_new_session` on POSIX
+- Process management: `DETACHED_PROCESS` on Windows, `start_new_session` on POSIX
 - GPU detection: `nvidia-smi` (works on Linux too)
 
 **Not tested**: macOS, Linux. May work but no guarantees.
 
 ---
 
+## 22. Default Steering Skill
+
+**Context**: Jev returns raw scores that small models cannot interpret. The LLM needs plain, imperative instructions.
+
+**Decision**: A default system prompt (`src/duomind/skill.py`) is injected into every request. It encodes concrete rules (match length to intent, plain text by default, call tools when listed, never refuse what tools allow). PRE decisions (verbosity, format, needs_tool) are translated into a short "steering directive" appended to that skill.
+
+**Rationale**: The LLM obeys a short imperative instruction in milliseconds without needing to reason about Jev's numeric output. Model-agnostic.
+
+## 23. Tool Calling (files, folders, projects, web)
+
+**Context**: Cline and Kilo Code create files and fetch the web by sending tool definitions and expecting a `tool_calls` response.
+
+**Decision**: Implement the OpenAI-compatible tool-calling protocol:
+- Accept `tools` and `tool_choice` in `/v1/chat/completions`.
+- Describe available tools and the exact `<tool_call>{...}</tool_call>` format in the prompt.
+- Parse the model's tool call and return `finish_reason: "tool_calls"` with a well-formed `tool_calls` array (streaming included).
+- Use the PRE `needs_tool` decision to decide when a tool is required.
+
+**Rationale**: The client executes the tool and returns the result; the server only needs to emit the correct protocol. This is what fixes "I cannot create files/folders/projects/fetch the web."
+
+---
+
+## 24. Skills: Task Workflows Injected into the Prompt
+
+**Context**: A 3B model told "create a project where the website looks like this URL" often replies "I can't do this" because it cannot improvise the multi-step plan (fetch the URL, scaffold files, run git). The steering skill tells it *how* to behave, but not *what workflow* to follow for a given task.
+
+**Decision**: Add a skill registry (`src/duomind/skills.py`) with a named workflow per task type:
+- `webdev` — build a website, including "recreate this URL" (fetch first, then scaffold files)
+- `coding` — write/implement/refactor code
+- `debug` — fix bugs, errors, tracebacks
+- `git` — status, diff, commit, pull, push, branch, merge
+- `webfetch` — fetch and answer about a URL
+- `general` — no specialized workflow (empty instructions)
+
+**Selection**: A new PRE `skill` CHOICE decision lets Jev pick the best skill; its criteria are derived from the registry so there is one source of truth. When Jev is off or low-confidence, a local keyword matcher (`select_skill`) scores each skill by trigger-word hits and picks the winner.
+
+**Injection**: The chosen skill's instructions are injected into the system prompt as `[Active skill: <name>]` before the steering directive and tool list. Each skill's instructions give the model the exact step-by-step workflow and explicitly forbid "I can't do this" when the required tools are available.
+
+**Rationale**: Small models obey concrete, imperative workflows far more reliably than they improvise them. This turns "the model refuses" into "the model follows a recipe."
+
+---
+
 ## Summary of Deviations from Original Prompt
 
-1. **Model selection**: 2-4B primary plus an optional 14B (VRAM constraint)
+1. **Model selection**: 2-4B instead of 8-14B (VRAM constraint)
 2. **Terminology**: "Noul" instead of "null" (SDK naming)
-3. **llama.cpp download**: Manual in setup wizard (automated download not implemented yet)
-4. **MID checkpoints**: Skeleton only (segmented generation deferred)
-5. **Default model count**: 5 (one 14B + four 2-3B)
+3. **llama.cpp download**: Automated, cross-platform (Windows/Linux/macOS) via GitHub releases
+4. **MID checkpoints**: Fully wired via segmented generation (non-streaming)
+5. **Decision points**: 18 across PRE/MID/POST (was 13); now 19 with the PRE `skill` decision
+6. **Cross-platform**: Windows, Linux, and macOS all supported
+7. **Tool calling**: OpenAI-compatible function calling added
+8. **Skills**: Task workflows (webdev, coding, debug, git, webfetch, general) selected by Jev and injected into the prompt
 
 **Everything else**: Implemented as specified or with reasonable defaults where unspecified.

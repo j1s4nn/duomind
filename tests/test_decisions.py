@@ -7,6 +7,7 @@ from duomind.decisions import (
     LocalFallbackClassifier,
     build_jev_question,
     get_decisions_for_stage,
+    verbosity_label,
 )
 
 
@@ -63,3 +64,25 @@ def test_decision_thresholds():
     """Test that thresholds are reasonable."""
     for name, decision in DECISION_REGISTRY.items():
         assert 0.0 <= decision.threshold <= 1.0, f"{name} threshold out of range"
+
+
+def test_expanded_registry_has_new_points():
+    """New steering decisions are registered across all stages."""
+    for name in ("verbosity", "format", "needs_tool", "too_verbose", "correct_format"):
+        assert name in DECISION_REGISTRY, f"{name} missing"
+
+    pre = get_decisions_for_stage(DecisionStage.PRE)
+    mid = get_decisions_for_stage(DecisionStage.MID)
+    post = get_decisions_for_stage(DecisionStage.POST)
+
+    assert "needs_tool" in pre
+    assert "should_stop" in mid
+    assert "too_verbose" in post
+
+
+def test_verbosity_label_mapping():
+    """Verbosity Score values map to steering labels."""
+    assert verbosity_label(0) == "brief"
+    assert verbosity_label(1) == "normal"
+    assert verbosity_label(2) == "detailed"
+    assert verbosity_label(None) == "normal"

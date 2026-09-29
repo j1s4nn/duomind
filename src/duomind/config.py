@@ -34,7 +34,14 @@ class DuoMindConfig(BaseModel):
 
     # Orchestration settings
     max_mid_checkpoints: int = 3
+    mid_segment_tokens: int = 160
+    mid_steering_enabled: bool = False
+    post_steering_enabled: bool = False
     fallback_mode: str = "rules"  # rules or simple
+
+    # Steering skill settings
+    system_prompt: Optional[str] = None  # Override the default steering skill
+    tools_enabled: bool = True  # Allow OpenAI-compatible tool calling
 
 
 class Config:

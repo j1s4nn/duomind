@@ -1,9 +1,14 @@
 """Utility functions for DuoMind."""
 
 import hashlib
+import io
+import json
 import logging
+import sys
+import tarfile
+import zipfile
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 import keyring
 from huggingface_hub import hf_hub_download
@@ -60,6 +65,130 @@ def get_pid_file() -> Path:
 def get_llama_server_pid_file() -> Path:
     """Get PID file path for the llama-server process."""
     return get_data_dir() / "llama-server.pid"
+
+
+def get_llama_server_binary() -> Path:
+    """Get the platform-appropriate llama-server binary path."""
+    name = "llama-server.exe" if sys.platform == "win32" else "llama-server"
+    return get_binaries_dir() / name
+
+
+def _llama_asset_keywords() -> List[str]:
+    """Asset-name keywords for the current platform (best-first)."""
+    if sys.platform == "win32":
+        return ["win-cuda", "win-vulkan", "win-cpu", "win-arm64"]
+    if sys.platform == "darwin":
+        return ["macos-arm64", "macos-x64"]
+    return ["ubuntu-x64", "linux-x64", "manylinux"]
+
+
+def download_llama_server() -> Path:
+    """Download and extract the llama-server binary for this platform.
+
+    Uses the GitHub releases API (ggml-org/llama.cpp, falling back to
+    ggerganov/llama.cpp). Raises RuntimeError with manual instructions on any
+    failure so the CLI can guide the user.
+    """
+    import httpx
+
+    binary = get_llama_server_binary()
+    if binary.exists():
+        return binary
+
+    binaries_dir = get_binaries_dir()
+    release = None
+
+    for repo in ("ggml-org/llama.cpp", "ggerganov/llama.cpp"):
+        api_url = f"https://api.github.com/repos/{repo}/releases/latest"
+        try:
+            resp = httpx.get(
+                api_url,
+                headers={"Accept": "application/vnd.github+json"},
+                timeout=30.0,
+                follow_redirects=True,
+                trust_env=False,
+            )
+            resp.raise_for_status()
+            release = resp.json()
+            break
+        except Exception:
+            continue
+
+    if not release:
+        raise RuntimeError("Could not reach the llama.cpp GitHub releases API.")
+
+    keywords = _llama_asset_keywords()
+    assets = release.get("assets", [])
+    candidates = [
+        a for a in assets
+        if any(k in a["name"].lower() for k in keywords)
+        and (a["name"].lower().endswith(".zip") or a["name"].lower().endswith(".tar.gz"))
+    ]
+    if not candidates:
+        # Broadest fallback: any archive asset.
+        candidates = [
+            a for a in assets
+            if a["name"].lower().endswith(".zip") or a["name"].lower().endswith(".tar.gz")
+        ]
+
+    last_error: Optional[Exception] = None
+    for asset in candidates:
+        url = asset.get("browser_download_url")
+        if not url:
+            continue
+        try:
+            with httpx.stream(
+                "GET", url, timeout=120.0, follow_redirects=True, trust_env=False
+            ) as resp:
+                resp.raise_for_status()
+                chunks = []
+                for chunk in resp.iter_bytes():
+                    chunks.append(chunk)
+            data = b"".join(chunks)
+            _extract_llama_server(data, asset["name"], binaries_dir)
+            if binary.exists():
+                return binary
+        except Exception as e:  # noqa: BLE001 - try next asset
+            last_error = e
+            continue
+
+    raise RuntimeError(
+        "Automated llama-server download failed"
+        + (f": {last_error}" if last_error else "")
+    )
+
+
+def _extract_llama_server(data: bytes, asset_name: str, dest_dir: Path) -> None:
+    """Extract the llama-server binary from a downloaded archive."""
+    name = asset_name.lower()
+    target = "llama-server.exe" if sys.platform == "win32" else "llama-server"
+
+    if name.endswith(".tar.gz"):
+        with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as tf:
+            for member in tf.getmembers():
+                if member.name.endswith(target):
+                    f = tf.extractfile(member)
+                    if f:
+                        dest = dest_dir / Path(member.name).name
+                        dest.write_bytes(f.read())
+                        _make_executable(dest)
+                        return
+    else:
+        with zipfile.ZipFile(io.BytesIO(data)) as zf:
+            for info in zf.infolist():
+                if info.filename.endswith(target):
+                    dest = dest_dir / Path(info.filename).name
+                    dest.write_bytes(zf.read(info))
+                    _make_executable(dest)
+                    return
+
+    raise FileNotFoundError(f"{target} not found in {asset_name}")
+
+
+def _make_executable(path: Path) -> None:
+    """Mark a binary executable on POSIX systems."""
+    if sys.platform != "win32":
+        path.chmod(0o755)
 
 
 def download_hf_file(
@@ -138,6 +267,5 @@ def mask_key(key: str) -> str:
 
 def hash_state(state: dict) -> str:
     """Generate SHA256 hash of state for caching."""
-    import json
     state_str = json.dumps(state, sort_keys=True)
     return hashlib.sha256(state_str.encode()).hexdigest()

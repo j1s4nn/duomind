@@ -59,7 +59,7 @@ class OllamaBackend(LLMBackend):
             "options": {
                 "num_predict": max_tokens,
                 "temperature": temperature,
-                "stop": stop or [],
+                "stop": self._merge_stop(stop),
             },
         }
 
@@ -91,7 +91,15 @@ class OllamaBackend(LLMBackend):
 
     async def encode_prompt(self, messages: list[Dict]) -> str:
         """Encode chat messages into a prompt string."""
-        # Same format as llama.cpp
+        if self._is_chatml():
+            parts = []
+            for msg in messages:
+                role = msg.get("role", "user")
+                content = msg.get("content", "") or ""
+                parts.append(f"<|im_start|>{role}\n{content}<|im_end|>")
+            parts.append("<|im_start|>assistant\n")
+            return "\n".join(parts)
+
         prompt_parts = []
 
         for msg in messages:
@@ -104,7 +112,28 @@ class OllamaBackend(LLMBackend):
                 prompt_parts.append(f"User: {content}")
             elif role == "assistant":
                 prompt_parts.append(f"Assistant: {content}")
+            elif role == "tool":
+                prompt_parts.append(f"Tool result: {content}")
 
         prompt_parts.append("Assistant:")
 
         return "\n\n".join(prompt_parts)
+
+    def _is_chatml(self) -> bool:
+        """Return True if the model uses the ChatML template (Qwen/Phi)."""
+        name = str(self.model_name).lower()
+        return "qwen" in name or "phi" in name
+
+    def _default_stop_tokens(self) -> list[str]:
+        """Stop tokens for the current model family."""
+        if self._is_chatml():
+            return ["<|im_end|>", "<|endoftext|>", "<|im_start|>"]
+        return []
+
+    def _merge_stop(self, stop: Optional[list[str]]) -> list[str]:
+        """Merge caller-provided stop strings with the model's defaults."""
+        merged = list(stop) if stop else []
+        for token in self._default_stop_tokens():
+            if token not in merged:
+                merged.append(token)
+        return merged

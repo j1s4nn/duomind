@@ -6,6 +6,8 @@ from typing import Any, Dict, List, Optional, Union
 
 from typesafe_sdk import Choice, Noul, Score
 
+from duomind.skills import SKILL_REGISTRY, select_skill
+
 
 class DecisionStage(str, Enum):
     """Decision point stage in the pipeline."""
@@ -31,6 +33,13 @@ class DecisionPoint:
     criteria: Union[Dict[str, Optional[str]], List[str], Dict[str, str], None]
     threshold: float = 0.6
     fallback: Optional[str] = None
+
+
+# Skill selection criteria, derived from the skill registry so there is a
+# single source of truth for the choices Jev can pick.
+_SKILL_CRITERIA = {
+    name: skill.description for name, skill in SKILL_REGISTRY.items()
+}
 
 
 # Decision Registry: All classification decisions in DuoMind
@@ -112,6 +121,55 @@ DECISION_REGISTRY: Dict[str, DecisionPoint] = {
         },
         threshold=0.8,
         fallback="true",
+    ),
+    "verbosity": DecisionPoint(
+        name="verbosity",
+        stage=DecisionStage.PRE,
+        kind=QuestionKind.SCORE,
+        instructions="How much detail does the user want in the response?",
+        criteria=[
+            "Brief: User wants a short, direct answer (greeting, yes/no, quick fact)",
+            "Normal: A standard answer is expected",
+            "Detailed: User explicitly asks for depth, explanation, or analysis"
+        ],
+        threshold=0.6,
+        fallback="1",
+    ),
+    "format": DecisionPoint(
+        name="format",
+        stage=DecisionStage.PRE,
+        kind=QuestionKind.CHOICE,
+        instructions="What output format best fits this request?",
+        criteria={
+            "plain_text": "Plain conversational text",
+            "markdown": "Markdown with headings and formatting",
+            "code": "Code or a script",
+            "json": "Structured JSON data",
+            "list": "A list of items or steps"
+        },
+        threshold=0.5,
+        fallback="plain_text",
+    ),
+    "needs_tool": DecisionPoint(
+        name="needs_tool",
+        stage=DecisionStage.PRE,
+        kind=QuestionKind.NOUL,
+        instructions="Does this request require using an external tool (creating files, folders, projects, or fetching the web)?",
+        criteria={
+            "true": "Request asks to create/modify files, scaffold a project, run a build, or fetch web content",
+            "false": "Request is a question, explanation, or text-only answer"
+        },
+        threshold=0.6,
+        fallback="false",
+    ),
+    "skill": DecisionPoint(
+        name="skill",
+        stage=DecisionStage.PRE,
+        kind=QuestionKind.CHOICE,
+        instructions="Which skill best matches this request?",
+        criteria=_SKILL_CRITERIA,
+        threshold=0.4,
+        fallback="general",
     ),
 
     # MID stage: During generation (between reasoning steps)
@@ -202,7 +260,44 @@ DECISION_REGISTRY: Dict[str, DecisionPoint] = {
         threshold=0.6,
         fallback="false",
     ),
+    "too_verbose": DecisionPoint(
+        name="too_verbose",
+        stage=DecisionStage.POST,
+        kind=QuestionKind.NOUL,
+        instructions="Is the generated answer longer than necessary for the request?",
+        criteria={
+            "true": "Answer rambles, repeats itself, or over-explains a simple request",
+            "false": "Length is appropriate for the request"
+        },
+        threshold=0.6,
+        fallback="false",
+    ),
+    "correct_format": DecisionPoint(
+        name="correct_format",
+        stage=DecisionStage.POST,
+        kind=QuestionKind.NOUL,
+        instructions="Does the answer use the format the request implied?",
+        criteria={
+            "true": "Format matches (code for code requests, list for lists, plain text otherwise)",
+            "false": "Answer uses the wrong format for the request"
+        },
+        threshold=0.6,
+        fallback="true",
+    ),
 }
+
+
+def verbosity_label(value: Any) -> str:
+    """Map a verbosity Score value (0/1/2) to a steering label."""
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return "normal"
+    if v < 0.5:
+        return "brief"
+    if v >= 1.5:
+        return "detailed"
+    return "normal"
 
 
 def get_decisions_for_stage(stage: DecisionStage) -> Dict[str, DecisionPoint]:
@@ -272,6 +367,39 @@ class LocalFallbackClassifier:
             if len(current_text) > 1000:
                 return {"value": True, "confidence": 0.6}
             return {"value": False, "confidence": 0.5}
+
+        elif decision_name == "needs_tool":
+            prompt_text = state.get("prompt", "").lower()
+            tool_keywords = [
+                "create", "make", "build", "generate a file", "new folder",
+                "project", "scaffold", "fetch", "download", "read the web",
+                "write a file", "folder", "website",
+            ]
+            if any(kw in prompt_text for kw in tool_keywords):
+                return {"value": True, "confidence": 0.55}
+            return {"value": False, "confidence": 0.55}
+
+        elif decision_name == "skill":
+            return {"value": select_skill(state), "confidence": 0.55}
+
+        elif decision_name == "verbosity":
+            prompt_text = state.get("prompt", "").lower()
+            if any(kw in prompt_text for kw in ["brief", "short", "quick", "in one sentence"]):
+                return {"value": 0, "confidence": 0.55}
+            if any(kw in prompt_text for kw in ["detail", "explain", "analyze", "in depth", "comprehensive"]):
+                return {"value": 2, "confidence": 0.55}
+            return {"value": 1, "confidence": 0.4}
+
+        elif decision_name == "too_verbose":
+            current_text = state.get("generated", "")
+            prompt_text = state.get("prompt", "")
+            # Simple request + long answer = too verbose
+            if len(prompt_text.split()) <= 4 and len(current_text.split()) > 40:
+                return {"value": True, "confidence": 0.6}
+            return {"value": False, "confidence": 0.4}
+
+        elif decision_name == "correct_format":
+            return {"value": True, "confidence": 0.5}
 
         # Default to fallback value with low confidence
         fallback_value = decision.fallback

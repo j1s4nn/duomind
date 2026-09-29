@@ -7,26 +7,287 @@
   <!-- Google Search Console Verification Tag -->
   <meta name="google-site-verification" content="iIOX1jpJb_0IWlS95ey62OWVGmhFTM6bo-4M6e4O2zY" />
 
-  <title>DuoMind — When Jev Meets LLM: make faster and token efficient.</title>
-  <meta name="description" content=" When Jev meets LLM -- Pair a small local LLM (System 2) with Jev model (System 1) to make small model more faster and accurate — OpenAI-compatible, private, and almost free to run in Kilo code and Cline.">
-  <meta name="keywords" content="local llm, openai compatible, self-hosted ai, small language model, dual system, system 1 system 2, llama.cpp, run llm locally, free local ai, cline, kilo code">
-  
+  <title>DuoMind — When Jev Meets LLM: Smarter, Faster, Local AI</title>
+  <meta name="description" content="DuoMind pairs a small local LLM (System 2) with Jev's fast classification API (System 1) so 3B-class models reason like much larger ones. OpenAI-compatible, private, and almost free. Works with Cline and Kilo Code.">
+  <meta name="keywords" content="local llm, openai compatible, self-hosted ai, small language model, dual system, system 1 system 2, llama.cpp, run llm locally, free local ai, cline, kilo code, jev, typesafe">
+  <meta name="author" content="DuoMind">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0b1020">
+  <link rel="canonical" href="https://j1s4nn.github.io/duomind/">
+
   <!-- Open Graph / Social Crawlers -->
-  <meta property="og:title" content="DuoMind — When Jev Meets LLM">
-  <meta property="og:description" content="A dual-system, OpenAI-compatible local LLM server. Almost free to run.">
+  <meta property="og:title" content="DuoMind — When Jev Meets LLM: Smarter, Faster, Local AI">
+  <meta property="og:description" content="A dual-system, OpenAI-compatible local LLM server. Pair a small local model with Jev classification to reason like a much larger one — almost free to run.">
   <meta property="og:image" content="https://j1s4nn.github.io/duomind/figures/banner.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://j1s4nn.github.io/duomind/">
+  <meta property="og:site_name" content="DuoMind">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="DuoMind — When Jev Meets LLM">
+  <meta name="twitter:title" content="DuoMind — When Jev Meets LLM: Smarter, Faster, Local AI">
   <meta name="twitter:description" content="A dual-system, OpenAI-compatible local LLM server. Almost free to run.">
   <meta name="twitter:image" content="https://j1s4nn.github.io/duomind/figures/banner.png">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DuoMind",
+    "description": "A dual-system, OpenAI-compatible local LLM server that pairs a small local model (System 2) with Jev classification (System 1) for smarter, faster, private generation.",
+    "url": "https://j1s4nn.github.io/duomind/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Windows 11, Linux, macOS",
+    "license": "https://opensource.org/licenses/MIT",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "codeRepository": "https://github.com/j1s4nn/duomind"
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121a33;
+      --card: #17203c;
+      --border: #26325a;
+      --text: #e7ecf7;
+      --muted: #9aa6c4;
+      --accent: #6c8cff;
+      --accent-2: #34d8c3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -10%, #1b2a55 0%, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+    header {
+      padding: 72px 0 40px;
+      text-align: center;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      margin-bottom: 22px;
+    }
+    h1 {
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+    h1 .grad {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .tagline {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 30px;
+    }
+    .cta {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 13px 26px;
+      border-radius: 10px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 140, 255, 0.35); }
+    .meta {
+      margin-top: 18px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .meta a { color: var(--accent); text-decoration: none; }
+    .meta a:hover { text-decoration: underline; }
+
+    section { padding: 40px 0; }
+    .section-title {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .card p { font-size: 0.92rem; color: var(--muted); }
+    .icon { font-size: 1.4rem; display: block; margin-bottom: 12px; }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .flow .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 22px;
+      text-align: center;
+      min-width: 180px;
+    }
+    .flow .step strong { display: block; font-size: 1rem; }
+    .flow .step span { font-size: 0.82rem; color: var(--muted); }
+    .flow .arrow { font-size: 1.4rem; color: var(--accent); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .stat { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .stat .num { font-size: 1.8rem; font-weight: 800; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .stat .lbl { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+      padding: 32px 0 48px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .disclaimer { margin-top: 14px; font-size: 0.8rem; opacity: 0.75; }
+  </style>
 </head>
 <body>
-  <h1>DuoMind</h1>
-  <p>A dual-system, OpenAI-compatible local AI server.</p>
-  <p><a href="https://github.com/j1s4nn/duomind">View on GitHub</a></p>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow">OpenAI-compatible &middot; Private &middot; Almost free</span>
+      <h1>DuoMind &mdash; <span class="grad">When Jev Meets LLM</span></h1>
+      <p class="tagline">
+        A dual-system local AI server that pairs a small local model (System&nbsp;2)
+        with Jev&rsquo;s fast classification API (System&nbsp;1) &mdash; so 3B-class models
+        reason like much larger ones, right on your own machine.
+      </p>
+      <a class="cta" href="https://github.com/j1s4nn/duomind">
+        <span>View on GitHub</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+      <p class="meta">
+        Free &amp; open source (MIT) &middot; Works with <a href="https://github.com/cline/cline">Cline</a> and Kilo Code
+      </p>
+    </header>
+
+    <section>
+      <h2 class="section-title">Why DuoMind</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="icon" aria-hidden="true">&#129504;</span>
+          <h3>Dual-System Architecture</h3>
+          <p>System&nbsp;2 (a small local LLM via llama.cpp) does the reasoning; System&nbsp;1 (Jev) handles classification. A 3B model punches far above its weight.</p>
+        </div>
+        <div class="card">
+          <span class="icon" aria-hidden="true">&#128274;</span>
+          <h3>100% Local Generation</h3>
+          <p>Text generation stays entirely on your machine. Only lightweight classification is sent to Jev &mdash; your output never leaves your computer.</p>
+        </div>
+        <div class="card">
+          <span class="icon" aria-hidden="true">&#128295;</span>
+          <h3>OpenAI-Compatible API</h3>
+          <p>Drop-in replacement for OpenAI-compatible endpoints. Plug into Cline or Kilo Code with a single base URL &mdash; no rewiring.</p>
+        </div>
+        <div class="card">
+          <span class="icon" aria-hidden="true">&#129513;</span>
+          <h3>Built-in Tool Calling</h3>
+          <p>Create files, folders, and whole projects. DuoMind steers the model to emit correct tool-call responses that your assistant executes.</p>
+        </div>
+        <div class="card">
+          <span class="icon" aria-hidden="true">&#9889;</span>
+          <h3>Skills Workflows</h3>
+          <p>Automatic task workflows (webdev, coding, debug, git, webfetch) keep small models on track instead of improvising or refusing.</p>
+        </div>
+        <div class="card">
+          <span class="icon" aria-hidden="true">&#128187;</span>
+          <h3>Cross-Platform</h3>
+          <p>Runs on Windows&nbsp;11, Linux, and macOS. The setup wizard fetches the right llama.cpp build for your platform automatically.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">How It Works</h2>
+      <div class="flow">
+        <div class="step"><strong>You ask</strong><span>plain text, OpenAI-style</span></div>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <div class="step"><strong>System 1 &mdash; Jev</strong><span>classifies intent, safety, format</span></div>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <div class="step"><strong>System 2 &mdash; LLM</strong><span>generates the answer locally</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Benchmark-Verified</h2>
+      <p style="text-align:center; color:var(--muted); max-width:640px; margin:0 auto 20px;">
+        Measured on a 3B model (Qwen2.5-Coder-3B-Instruct), Jev&nbsp;ON vs Jev&nbsp;OFF &mdash; 100 requests, 100% success.
+      </p>
+      <div class="stats">
+        <div class="stat"><div class="num">+60%</div><div class="lbl">more output tokens</div></div>
+        <div class="stat"><div class="num">+17%</div><div class="lbl">faster generation</div></div>
+        <div class="stat"><div class="num">&minus;15%</div><div class="lbl">fewer prompt tokens</div></div>
+        <div class="stat"><div class="num">100%</div><div class="lbl">success rate</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Get Started</h2>
+      <div style="text-align:center; color:var(--muted); max-width:640px; margin:0 auto;">
+        <p>Install, run <code>duomind setup</code>, and connect your assistant.</p>
+        <p style="margin-top:18px;">
+          <a class="cta" href="https://github.com/j1s4nn/duomind">Read the Docs on GitHub</a>
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        <a href="https://github.com/j1s4nn/duomind">GitHub</a>
+        &middot; MIT License
+        &middot; Built on <a href="https://github.com/ggerganov/llama.cpp">llama.cpp</a>
+        &middot; Classified by <a href="https://typesafe.ai">TypeSafe&nbsp;AI</a>
+      </p>
+      <p class="disclaimer">
+        Unofficial community project. Not affiliated with or endorsed by TypeSafe AI.
+      </p>
+    </footer>
+  </div>
 </body>
 </html>

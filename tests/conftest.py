@@ -8,6 +8,12 @@ from duomind.backends.base import LLMBackend
 from duomind.jev_client import JevClient
 
 
+@pytest.fixture(autouse=True)
+def _isolate_jev_cache(tmp_path, monkeypatch):
+    """Redirect the Jev cache to a temp dir so tests never touch real data."""
+    monkeypatch.setattr("duomind.jev_client.get_cache_dir", lambda: tmp_path)
+
+
 class MockBackend(LLMBackend):
     """Mock LLM backend for testing."""
 
